@@ -1,0 +1,17 @@
+{
+    "name": "gh0stytopflo/php-lib",
+    "description": "A mock library management cli app written in php",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Gh0stytopflo\\PhpLib\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "GH0STYtopflo"
+        }
+    ],
+    "minimum-stability": "beta",
+    "require": {}
+}

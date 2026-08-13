@@ -1,0 +1,6 @@
+# We won't track the vendor dir (ofc. It'll make our repo bloated)
+vendor/
+
+test.php
+
+tables/*
