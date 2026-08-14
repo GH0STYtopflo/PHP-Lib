@@ -2,6 +2,8 @@
 
 namespace Gh0stytopflo\PhpLib\Model;
 
+use Gh0stytopflo\PhpLib\Util\IdGenerator;
+
 class Book implements Model
 {
     private int $bookId;
@@ -27,6 +29,8 @@ class Book implements Model
     ) {
         if (isset($bookId)) {
             $this->bookId = $bookId;
+        } else {
+            $this->bookId = IdGenerator::generate(fopen(__DIR__ . "/../../tables/book.csv", 'r'));
         }
 
         $this->author = $author;
