@@ -39,4 +39,31 @@ class MemberHandle implements Handle
             fputcsv($file, $record, ',');
         }
     }
+
+    public static function search(
+        ?string $name = null,
+        ?string $lname = null,
+        ?int $date = null,
+        ?int $id = null
+    ) {
+        $file = fopen(self::PATH_TO_FILE, 'r');
+        $records = [];
+
+        while (!feof($file)) {
+            $record = fgetcsv($file, 0, ',');
+
+            if (!is_bool($record)) {
+                if (
+                    (!isset($id) || $id == $record[0])
+                    && (!isset($name) || str_contains(strtolower($record[1]), strtolower($name)))
+                    && (!isset($lname) || str_contains(strtolower($record[2]), strtolower($lname)))
+                    && (!isset($date) || $date == $record[3])
+                ) {
+                    $records[] = $record;
+                }
+            }
+        }
+
+        return $records;
+    }
 }
