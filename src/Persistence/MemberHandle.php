@@ -2,6 +2,7 @@
 
 namespace Gh0stytopflo\PhpLib\Persistence;
 
+use Gh0stytopflo\PhpLib\Model\Member;
 use Gh0stytopflo\PhpLib\Model\Model;
 
 class MemberHandle implements Handle
@@ -65,5 +66,20 @@ class MemberHandle implements Handle
         }
 
         return $records;
+    }
+
+    public static function findById(int $id): Model|false
+    {
+        $file = fopen(self::PATH_TO_FILE, 'r');
+
+        while (!feof($file)) {
+            $csvRecord = fgetcsv($file);
+
+            if ($csvRecord[0] == $id) {
+                return Member::mapArrayToInstance($csvRecord);
+            }
+        }
+
+        return false;
     }
 }

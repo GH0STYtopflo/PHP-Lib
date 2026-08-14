@@ -2,6 +2,7 @@
 
 namespace Gh0stytopflo\PhpLib\Persistence;
 
+use Gh0stytopflo\PhpLib\Model\Book;
 use Gh0stytopflo\PhpLib\Model\Model;
 
 class BookHandle implements Handle
@@ -69,5 +70,20 @@ class BookHandle implements Handle
         }
 
         return $records;
+    }
+
+    public static function findById(int $id): Model | false
+    {
+        $file = fopen(self::PATH_TO_FILE, 'r');
+
+        while (!feof($file)) {
+            $csvRecord = fgetcsv($file);
+
+            if ($csvRecord[0] == $id) {
+                return Book::mapArrayToInstance($csvRecord);
+            }
+        }
+
+        return false;
     }
 }

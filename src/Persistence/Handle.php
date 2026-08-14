@@ -11,4 +11,6 @@ interface Handle
     public static function readAll(): array;
 
     public static function writeAll(array $records): void;
+
+    public static function findById(int $id): Model | false;
 }
