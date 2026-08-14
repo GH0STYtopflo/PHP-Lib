@@ -2,6 +2,9 @@
 
 namespace Gh0stytopflo\PhpLib\Service;
 
+use Gh0stytopflo\PhpLib\Exception\BorrowedBookDeletionException;
+use Gh0stytopflo\PhpLib\Exception\BorrowingBorrowedBookException;
+use Gh0stytopflo\PhpLib\Exception\ReturningNotBorrowedBookException;
 use Gh0stytopflo\PhpLib\Model\Book;
 use Gh0stytopflo\PhpLib\Model\Member;
 use Gh0stytopflo\PhpLib\Persistence\BookHandle;
@@ -25,11 +28,15 @@ class BookService
         foreach ($csvRecords as $i => $record) {
             if ($record[0] == $book->getBookId()) {
                 // Prevent deleting a borrowed book
-                if (empty($record[6])) {
+                if (!is_numeric($record[6])) {
                     array_splice($csvRecords, $i, length: 1);
                 } else {
-                    return;
-                    // TODO: Throw an exception
+                    throw new BorrowedBookDeletionException(
+                        message: "You cannot delete \e[0;33m" . $book->getTitle() . "\e[0m {" .
+                        $book->getBookId() . '}' .
+                        ". It is currently borrowed by member \e[0;33m" . (int) $book->getMemberId() . "\e[0m",
+                        line: 32
+                    );
                 }
                 break;
             }
@@ -63,13 +70,17 @@ class BookService
         foreach ($csvRecords as &$record) {
             if ($record[0] == $book->getBookId()) {
                 // Prevent borrowing a book that's already been borrowed
-                if (empty($record[6])) {
+                if (!is_numeric($record[6])) {
                     $record[6] = $member->getMemberId();
                     $record[7] = time();
                     $record[8] = $returnDate;
                 } else {
-                    return;
-                    // Throw an exception
+                    throw new BorrowingBorrowedBookException(
+                        message: "You cannot borrow \e[0;33m" . $book->getTitle() . "\e[0m {" .
+                        $book->getBookId() . '}' .
+                        ". It is currently borrowed by member \e[0;33m" . (int) $book->getMemberId() . "\e[0m",
+                        line: 77
+                    );
                 }
 
                 break;
@@ -86,13 +97,16 @@ class BookService
         foreach ($csvRecords as &$record) {
             if ($record[0] == $book->getBookId()) {
                 // Prevent returning a book that has not been borrowed
-                if (empty($record[6])) {
+                if (is_numeric($record[6])) {
                     $record[6] = '';
                     $record[7] = '';
                     $record[8] = time();
                 } else {
-                    return;
-                    // Throw an exception
+                    throw new ReturningNotBorrowedBookException(
+                        message: "You cannot return \e[0;33m" . $book->getTitle() . "\e[0m {id: " .
+                        $book->getBookId() . '}' . ". It's not borrowed by anyone at the moment",
+                        line: 105
+                    );
                 }
 
                 break;
