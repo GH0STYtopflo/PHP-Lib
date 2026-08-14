@@ -10,6 +10,9 @@ class Book
     private int $year;
     private int $printing;
     private string $genre;
+    private int $memberId;
+    private int $borrowDate;
+    private int $returnDate;
 
     public function __construct(string $title, string $author, int $year, int $printing, string $genre)
     {
@@ -23,7 +26,17 @@ class Book
 
     public function getPropertyArray(): array
     {
-        return array(0, $this->title, $this->author, $this->year, $this->printing, $this->genre);
+        return array(
+            isset($this->bookId) ?  $this->bookId : null,
+            isset($this->title) ? $this->title : null,
+            isset($this->author) ? $this->author :  null,
+            isset($this->year) ? $this->year : null,
+            isset($this->printing) ? $this->printing : null,
+            isset($this->genre) ? $this->genre : null,
+            isset($this->memberId) ? $this->memberId : null,
+            isset($this->borrowDate) ? $this->borrowDate : null,
+            isset($this->returnDate) ? $this->returnDate : null
+        );
     }
 
     public function printProperties(): void
