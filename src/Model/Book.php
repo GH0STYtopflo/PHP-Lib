@@ -8,20 +8,20 @@ class Book implements Model
 {
     private int $bookId;
     private string $title;
-    private string $author;
-    private int $year;
-    private int $printing;
-    private string $genre;
+    private ?string $author;
+    private ?int $year;
+    private ?int $printing;
+    private ?string $genre;
     private ?int $memberId;
     private ?int $borrowDate;
     private ?int $returnDate;
 
     public function __construct(
         string $title,
-        string $author,
-        int $year,
-        int $printing,
-        string $genre,
+        ?string $author = null,
+        ?int $year = null,
+        ?int $printing = null,
+        ?string $genre = null,
         ?int $bookId = null,
         ?int $memberID = null,
         ?int $borrowDate = null,
