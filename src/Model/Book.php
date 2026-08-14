@@ -2,7 +2,7 @@
 
 namespace Gh0stytopflo\PhpLib\Model;
 
-class Book
+class Book implements Model
 {
     private int $bookId;
     private string $title;
@@ -55,7 +55,7 @@ class Book
         );
     }
 
-    public function getPropertyArray(): array
+    public function getPropertiesArray(): array
     {
         return array(
             isset($this->bookId) ?  $this->bookId : null,

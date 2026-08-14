@@ -4,7 +4,7 @@ namespace Gh0stytopflo\PhpLib\Model;
 
 use Gh0stytopflo\PhpLib\Model\Person;
 
-class Member extends Person
+class Member extends Person implements Model
 {
     private int $membershipStartDate;
     private int $memberId;
@@ -24,7 +24,7 @@ class Member extends Person
         $this->membershipStartDate = $membershipStartDate;
     }
 
-    public static function mapArrayToInstance(array $csvRecord)
+    public static function mapArrayToInstance(array $csvRecord): self
     {
         return new self(
             memberId: $csvRecord[0],
@@ -34,7 +34,7 @@ class Member extends Person
         );
     }
 
-    public function getPropertyArray(): array
+    public function getPropertiesArray(): array
     {
         return array(
             $this->memberId,

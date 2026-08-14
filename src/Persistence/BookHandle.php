@@ -2,17 +2,17 @@
 
 namespace Gh0stytopflo\PhpLib\Persistence;
 
-use Gh0stytopflo\PhpLib\Model\Book;
+use Gh0stytopflo\PhpLib\Model\Model;
 
-class BookHandle
+class BookHandle implements Handle
 {
     private const PATH_TO_FILE = __DIR__ . '/../../tables/book.csv';
 
-    public static function append(Book $book)
+    public static function append(Model $book)
     {
         $file = fopen(self::PATH_TO_FILE, 'a+');
 
-        fputcsv($file, $book->getPropertyArray(), ',');
+        fputcsv($file, $book->getPropertiesArray(), ',');
     }
 
     public static function readAll(): array
@@ -41,12 +41,12 @@ class BookHandle
     }
 
     public static function search(
-        int $id = null,
-        string $title = null,
-        string $author = null,
-        int $year = null,
-        int $printing = null,
-        string $genre = null
+        ?int $id = null,
+        ?string $title = null,
+        ?string $author = null,
+        ?int $year = null,
+        ?int $printing = null,
+        ?string $genre = null
     ): array {
         $file = fopen(self::PATH_TO_FILE, 'r');
         $records = [];
