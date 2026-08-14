@@ -90,4 +90,105 @@ class Book implements Model
 
         echo $msg;
     }
+
+    public function getBookId(): int
+    {
+        return $this->bookId;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?string $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(?int $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    public function getPrinting(): ?int
+    {
+        return $this->printing;
+    }
+
+    public function setPrinting(?int $printing): self
+    {
+        $this->printing = $printing;
+
+        return $this;
+    }
+
+    public function getGenre(): ?string
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(?string $genre): self
+    {
+        $this->genre = $genre;
+
+        return $this;
+    }
+
+    public function getMemberId(): ?int
+    {
+        return $this->memberId;
+    }
+
+    public function setMemberId(?int $memberId): self
+    {
+        $this->memberId = $memberId;
+
+        return $this;
+    }
+
+    public function getBorrowDate(): ?int
+    {
+        return $this->borrowDate;
+    }
+
+    public function setBorrowDate(?int $borrowDate): self
+    {
+        $this->borrowDate = $borrowDate;
+
+        return $this;
+    }
+
+    public function getReturnDate(): ?int
+    {
+        return $this->returnDate;
+    }
+
+    public function setReturnDate(?int $returnDate): self
+    {
+        $this->returnDate = $returnDate;
+
+        return $this;
+    }
 }
