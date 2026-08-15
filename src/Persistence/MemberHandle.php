@@ -7,7 +7,7 @@ use Gh0stytopflo\PhpLib\Model\Model;
 
 class MemberHandle implements Handle
 {
-    private const PATH_TO_FILE = __DIR__ . '/../../tables/member.csv';
+    public const PATH_TO_FILE = __DIR__ . '/../../tables/member.csv';
 
     public static function append(Model $member)
     {

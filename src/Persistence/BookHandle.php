@@ -7,7 +7,7 @@ use Gh0stytopflo\PhpLib\Model\Model;
 
 class BookHandle implements Handle
 {
-    private const PATH_TO_FILE = __DIR__ . '/../../tables/book.csv';
+    public const PATH_TO_FILE = __DIR__ . '/../../tables/book.csv';
 
     public static function append(Model $book)
     {

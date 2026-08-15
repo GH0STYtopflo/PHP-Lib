@@ -3,6 +3,7 @@
 namespace Gh0stytopflo\PhpLib\Model;
 
 use Gh0stytopflo\PhpLib\Model\Person;
+use Gh0stytopflo\PhpLib\Persistence\StaffHandle;
 use Gh0stytopflo\PhpLib\Util\IdGenerator;
 
 class Staff extends Person implements Model
@@ -25,7 +26,7 @@ class Staff extends Person implements Model
         if (isset($staffId)) {
             $this->staffId = $staffId;
         } else {
-            IdGenerator::generate(fopen(__DIR__ . "/../../tables/staff.csv", 'r'));
+            IdGenerator::generate(fopen(StaffHandle::PATH_TO_FILE, 'r'));
         }
         $this->name = $name;
         $this->lname = $lname;

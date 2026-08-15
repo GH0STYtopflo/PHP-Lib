@@ -3,6 +3,7 @@
 namespace Gh0stytopflo\PhpLib\Model;
 
 use Gh0stytopflo\PhpLib\Model\Person;
+use Gh0stytopflo\PhpLib\Persistence\MemberHandle;
 use Gh0stytopflo\PhpLib\Util\IdGenerator;
 
 class Member extends Person implements Model
@@ -23,7 +24,7 @@ class Member extends Person implements Model
         if (isset($memberId)) {
             $this->memberId = $memberId;
         } else {
-            $this->memberId = IdGenerator::generate(fopen(__DIR__ . "/../../tables/member.csv", 'r'));
+            $this->memberId = IdGenerator::generate(fopen(MemberHandle::PATH_TO_FILE, 'r'));
         }
         $this->name = $name;
         $this->lname = $lname;
