@@ -42,10 +42,12 @@ class MemberHandle implements Handle
     }
 
     public static function search(
+        ?int $id = null,
         ?string $name = null,
         ?string $lname = null,
-        ?int $date = null,
-        ?int $id = null
+        ?string $phone = null,
+        ?string $email = null,
+        ?int $date = null
     ) {
         $file = fopen(self::PATH_TO_FILE, 'r');
         $records = [];
@@ -58,7 +60,9 @@ class MemberHandle implements Handle
                     (!isset($id) || $id == $record[0])
                     && (!isset($name) || str_contains(strtolower($record[1]), strtolower($name)))
                     && (!isset($lname) || str_contains(strtolower($record[2]), strtolower($lname)))
-                    && (!isset($date) || $date == $record[3])
+                    && (!isset($phone) || $phone == $record[3])
+                    && (!isset($email) || $phone == $record[4])
+                    && (!isset($date) || $date == $record[5])
                 ) {
                     $records[] = $record;
                 }
