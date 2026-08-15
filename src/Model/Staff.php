@@ -65,4 +65,67 @@ class Staff extends Person implements Model
     public function printProperties(): void
     {
     }
+
+    public function getStaffId(): int
+    {
+        return $this->staffId;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getLastname(): string
+    {
+        return $this->lname;
+    }
+
+    public function getPositionTitle(): string
+    {
+        return $this->positionTitle;
+    }
+
+    public function setPositionTitle(string $positionTitle): self
+    {
+        $this->positionTitle = $positionTitle;
+
+        return $this;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getShiftStart(): int
+    {
+        return $this->shiftStart;
+    }
+
+    public function setShiftStart(int $shiftStart): self
+    {
+        $this->shiftStart = $shiftStart;
+
+        return $this;
+    }
+
+    public function getShiftEnd(): int
+    {
+        return $this->shiftEnd;
+    }
+
+    public function setShiftEnd(int $shiftEnd): self
+    {
+        $this->shiftEnd = $shiftEnd;
+
+        return $this;
+    }
 }
