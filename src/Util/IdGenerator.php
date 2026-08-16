@@ -17,8 +17,7 @@ class IdGenerator
             if ($pos == -1 || $char == "\n") {
                 $line = strrev($line);
                 $csvRecord = explode(',', $line);
-
-                if (!empty($csvRecord[0]) && is_numeric($csvRecord[0])) {
+                if (is_numeric($csvRecord[0])) {
                     return $csvRecord[0] + 1;
                 }
 
