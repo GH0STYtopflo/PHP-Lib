@@ -26,7 +26,7 @@ class Staff extends Person implements Model
         if (isset($staffId)) {
             $this->staffId = $staffId;
         } else {
-            IdGenerator::generate(fopen(StaffHandle::PATH_TO_FILE, 'r'));
+            $this->staffId = IdGenerator::generate(fopen(StaffHandle::PATH_TO_FILE, 'r'));
         }
         $this->name = $name;
         $this->lname = $lname;
