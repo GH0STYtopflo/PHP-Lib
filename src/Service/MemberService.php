@@ -2,6 +2,7 @@
 
 namespace Gh0stytopflo\PhpLib\Service;
 
+use Gh0stytopflo\PhpLib\Exception\MemberWithBorrowedBookDelException;
 use Gh0stytopflo\PhpLib\Model\Member;
 use Gh0stytopflo\PhpLib\Persistence\BookHandle;
 use Gh0stytopflo\PhpLib\Persistence\MemberHandle;
@@ -38,8 +39,12 @@ class MemberService
                 }
             }
         } else {
-            return;
-            // TODO: Throw an exception
+            throw new MemberWithBorrowedBookDelException(
+                line: 42,
+                message: "You cannot delete \e[0;33m" . $member->getName() . "\e[0m {" .
+                $member->getMemberId() . '}' .
+                ". They currently have a book in their possession"
+            );
         }
 
         MemberHandle::writeAll($csvRecords);
