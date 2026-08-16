@@ -6,7 +6,7 @@ use Gh0stytopflo\PhpLib\Model\Person;
 use Gh0stytopflo\PhpLib\Persistence\StaffHandle;
 use Gh0stytopflo\PhpLib\Util\IdGenerator;
 
-class Staff extends Person implements Model
+class Staff extends Person
 {
     private int $staffId;
     private string $positionTitle;
@@ -46,19 +46,6 @@ class Staff extends Person implements Model
             email: $csvRecord[4],
             shiftStart: $csvRecord[5],
             shiftEnd: $csvRecord[6]
-        );
-    }
-
-    public function getPropertiesArray(): array
-    {
-        return array(
-            $this->staffId,
-            $this->name,
-            $this->lname,
-            $this->positionTitle,
-            $this->email,
-            $this->shiftStart,
-            $this->shiftStart
         );
     }
 

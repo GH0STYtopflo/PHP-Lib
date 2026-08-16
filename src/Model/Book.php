@@ -5,7 +5,7 @@ namespace Gh0stytopflo\PhpLib\Model;
 use Gh0stytopflo\PhpLib\Persistence\BookHandle;
 use Gh0stytopflo\PhpLib\Util\IdGenerator;
 
-class Book implements Model
+class Book extends Model
 {
     private int $bookId;
     private string $title;
@@ -57,21 +57,6 @@ class Book implements Model
             memberID: !empty($csvRecord[6]) ? (int) $csvRecord[6] : null,
             borrowDate: !empty($csvRecord[7]) ? (int) $csvRecord[7] : null,
             returnDate: !empty($csvRecord[8]) ? (int) $csvRecord[8] : null,
-        );
-    }
-
-    public function getPropertiesArray(): array
-    {
-        return array(
-            isset($this->bookId) ?  $this->bookId : null,
-            isset($this->title) ? $this->title : null,
-            isset($this->author) ? $this->author :  null,
-            isset($this->year) ? $this->year : null,
-            isset($this->printing) ? $this->printing : null,
-            isset($this->genre) ? $this->genre : null,
-            isset($this->memberId) ? $this->memberId : null,
-            isset($this->borrowDate) ? $this->borrowDate : null,
-            isset($this->returnDate) ? $this->returnDate : null
         );
     }
 

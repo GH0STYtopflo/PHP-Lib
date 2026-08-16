@@ -6,7 +6,7 @@ use Gh0stytopflo\PhpLib\Model\Person;
 use Gh0stytopflo\PhpLib\Persistence\MemberHandle;
 use Gh0stytopflo\PhpLib\Util\IdGenerator;
 
-class Member extends Person implements Model
+class Member extends Person
 {
     private int $memberId;
     private string $phone;
@@ -46,18 +46,6 @@ class Member extends Person implements Model
             phone: $csvRecord[3],
             email: $csvRecord[4],
             membershipStartDate: $csvRecord[5]
-        );
-    }
-
-    public function getPropertiesArray(): array
-    {
-        return array(
-            $this->memberId,
-            $this->name,
-            $this->lname,
-            $this->phone,
-            $this->email,
-            $this->membershipStartDate
         );
     }
 
