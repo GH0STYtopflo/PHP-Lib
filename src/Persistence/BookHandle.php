@@ -4,42 +4,13 @@ namespace Gh0stytopflo\PhpLib\Persistence;
 
 use Gh0stytopflo\PhpLib\Model\Book;
 use Gh0stytopflo\PhpLib\Model\Model;
+use Gh0stytopflo\PhpLib\Persistence\HandleTrait;
 
 class BookHandle implements Handle
 {
+    use HandleTrait;
+
     public const PATH_TO_FILE = __DIR__ . '/../../tables/book.csv';
-
-    public static function append(Model $book)
-    {
-        $file = fopen(self::PATH_TO_FILE, 'a+');
-
-        fputcsv($file, $book->getPropertiesArray(), ',');
-    }
-
-    public static function readAll(): array
-    {
-        $file = fopen(self::PATH_TO_FILE, 'r');
-        $records = [];
-
-        while (!feof($file)) {
-            $record = fgetcsv($file, 0, ',');
-
-            if (!is_bool($record)) {
-                $records[] = $record;
-            }
-        }
-
-        return $records;
-    }
-
-    public static function writeAll(array $records): void
-    {
-        $file = fopen(self::PATH_TO_FILE, 'w+');
-
-        foreach ($records as $record) {
-            fputcsv($file, $record, ',');
-        }
-    }
 
     public static function search(
         ?int $id = null,
