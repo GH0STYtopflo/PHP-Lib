@@ -4,3 +4,5 @@ vendor/
 sandbox.php
 
 tables/*
+
+library.json
