@@ -44,7 +44,7 @@ class Member extends Person
             name: $csvRecord[1],
             lname: $csvRecord[2],
             phone: $csvRecord[3],
-            email: $csvRecord[4],
+            email: !empty($csvRecord[4]) ? $csvRecord[4] : null,
             membershipStartDate: $csvRecord[5]
         );
     }
