@@ -75,23 +75,6 @@ class Book implements Model
         );
     }
 
-    public function printProperties(): void
-    {
-        $msg = <<<CODE
-            $this->title
-              │
-              ├── Author: $this->author
-              │
-              ├── Year: $this->year
-              │
-              ├── Printing: $this->printing
-              │
-              └── Genre: $this->genre
-            CODE;
-
-        echo $msg;
-    }
-
     public function getBookId(): int
     {
         return $this->bookId;

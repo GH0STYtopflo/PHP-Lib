@@ -62,10 +62,6 @@ class Staff extends Person implements Model
         );
     }
 
-    public function printProperties(): void
-    {
-    }
-
     public function getStaffId(): int
     {
         return $this->staffId;

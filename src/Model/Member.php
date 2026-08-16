@@ -61,10 +61,6 @@ class Member extends Person implements Model
         );
     }
 
-    public function printProperties(): void
-    {
-    }
-
     public function getName(): string
     {
         return $this->name;

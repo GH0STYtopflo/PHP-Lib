@@ -6,6 +6,4 @@ abstract class Person
 {
     protected string $name;
     protected string $lname;
-
-    abstract public function printProperties(): void;
 }
