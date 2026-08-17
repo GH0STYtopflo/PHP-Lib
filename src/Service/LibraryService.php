@@ -2,18 +2,49 @@
 
 namespace Gh0stytopflo\PhpLib\Service;
 
+use Gh0stytopflo\PhpLib\Exception\RequiredPropertyNotProvidedException;
+use Gh0stytopflo\PhpLib\Exception\TypeMismatchException;
 use Gh0stytopflo\PhpLib\Model\Library;
 use Gh0stytopflo\PhpLib\Persistence\LibraryHandle;
 
 class LibraryService
 {
-    public static function save(
-        string $name,
-        string $address,
-        int $open,
-        int $close
-    ): void {
-        $library = new Library($name, $address, $open, $close);
+    public static function save(array $data): void
+    {
+        if (!isset($data['name'])) {
+            throw new RequiredPropertyNotProvidedException('name', line: __LINE__);
+        }
+
+        if (!isset($data['address'])) {
+            return;
+
+            throw new RequiredPropertyNotProvidedException('address', line: __LINE__);
+        }
+
+        if (!isset($data['open'])) {
+            return;
+            throw new RequiredPropertyNotProvidedException('open', line: __LINE__);
+        }
+
+        if (!isset($data['close'])) {
+            throw new RequiredPropertyNotProvidedException('close', line: __LINE__);
+        }
+
+        if (!is_numeric($data['open'])) {
+            throw new TypeMismatchException('open', 'integer', gettype($data['open']), line: __LINE__);
+        }
+
+        if (!is_numeric($data['close'])) {
+            throw new TypeMismatchException('close', 'integer', gettype($data['close']), line: __LINE__);
+        }
+
+
+        $library = new Library(
+            $data['name'],
+            $data['address'],
+            $data['open'],
+            $data['close']
+        );
 
         LibraryHandle::save($library);
     }
@@ -25,17 +56,13 @@ class LibraryService
         return Library::mapArrayToInstance($aarr);
     }
 
-    public function editLibrary(
-        ?string $name = null,
-        ?string $address = null,
-        ?int $open = null,
-        ?int $close = null
-    ): void {
+    public function editLibrary(array $data): void
+    {
         $library = self::read();
 
-        $library->setName(isset($name) ? $name : $library->getName());
-        $library->setAddress(isset($address) ? $address : $library->getAddress());
-        $library->setOpen(isset($open) ? $open : $library->getOpen());
-        $library->setClose(isset($close) ? $close : $library->getClose());
+        $library->setName(isset($data['name']) ? $data['name'] : $library->getName());
+        $library->setAddress(isset($data['address']) ? $data['address'] : $library->getAddress());
+        $library->setOpen(isset($data['open']) ? $data['open'] : $library->getOpen());
+        $library->setClose(isset($data['close']) ? $data['close'] : $library->getClose());
     }
 }

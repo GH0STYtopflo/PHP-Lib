@@ -3,25 +3,33 @@
 namespace Gh0stytopflo\PhpLib\Service;
 
 use Gh0stytopflo\PhpLib\Exception\MemberWithBorrowedBookDelException;
+use Gh0stytopflo\PhpLib\Exception\RequiredPropertyNotProvidedException;
 use Gh0stytopflo\PhpLib\Model\Member;
 use Gh0stytopflo\PhpLib\Persistence\BookHandle;
 use Gh0stytopflo\PhpLib\Persistence\MemberHandle;
 
 class MemberService
 {
-    public static function add(
-        string $name,
-        string $lname,
-        string $phone,
-        ?int $membershipStartDate = null,
-        ?string $email = null,
-    ): void {
+    public static function add(array $data): void
+    {
+        if (!isset($data['name'])) {
+            throw new RequiredPropertyNotProvidedException('name', line: __LINE__);
+        }
+
+        if (!isset($data['lname'])) {
+            throw new RequiredPropertyNotProvidedException('lname', line: __LINE__);
+        }
+
+        if (!isset($data['phone'])) {
+            throw new RequiredPropertyNotProvidedException('phone', line: __LINE__);
+        }
+
         $member = new Member(
-            name: $name,
-            lname: $lname,
-            phone: $phone,
-            email: $email,
-            membershipStartDate: $membershipStartDate
+            name: $data['name'],
+            lname: $data['lname'],
+            phone: $data['phone'],
+            email: isset($data['email']) ? $data['email'] : null,
+            membershipStartDate: isset($data['membership-date']) ? $data['membership-date'] : null,
         );
 
         MemberHandle::append($member);
@@ -39,12 +47,7 @@ class MemberService
                 }
             }
         } else {
-            throw new MemberWithBorrowedBookDelException(
-                line: 42,
-                message: "You cannot delete \e[0;33m" . $member->getName() . "\e[0m {" .
-                $member->getMemberId() . '}' .
-                ". They currently have a book in their possession"
-            );
+            throw new MemberWithBorrowedBookDelException($member, __LINE__);
         }
 
         MemberHandle::writeAll($csvRecords);
@@ -63,21 +66,15 @@ class MemberService
         return false;
     }
 
-    public static function search(
-        ?int $id = null,
-        ?string $name = null,
-        ?string $lname = null,
-        ?string $phone = null,
-        ?string $email = null,
-        ?int $date = null
-    ): array {
+    public static function search(array $data): array
+    {
         $csvRecords = MemberHandle::search(
-            $id,
-            $name,
-            $lname,
-            $phone,
-            $email,
-            $date
+            id: isset($data['member-id']) ? $data['member-id'] : null,
+            name: isset($data['name']) ? $data['name'] : null,
+            lname: isset($data['lname']) ? $data['lname'] : null,
+            phone: isset($data['phone']) ? $data['phone'] : null,
+            email: isset($data['email']) ? $data['email'] : null,
+            date: isset($data['membership-date']) ? $data['membership-date'] : null,
         );
 
         $members = [];
@@ -91,21 +88,17 @@ class MemberService
 
     public static function edit(
         Member $member,
-        ?string $name = null,
-        ?string $lname = null,
-        ?string $phone = null,
-        ?string $email = null,
-        ?int $date = null
+        array $data
     ): void {
         $csvRecords = MemberHandle::readAll();
 
         foreach ($csvRecords as &$record) {
             if ($record[0] == $member->getMemberId()) {
-                $record[1] = isset($name) ? $name : $record[1];
-                $record[2] = isset($lname) ? $lname : $record[2];
-                $record[3] = isset($phone) ? $phone : $record[3];
-                $record[4] = isset($email) ? $email : $record[4];
-                $record[5] = isset($date) ? $date : $record[5];
+                $record[1] = isset($data['name']) ? $data['name'] : $record[1];
+                $record[2] = isset($data['lname']) ? $data['lanme'] : $record[2];
+                $record[3] = isset($data['phone']) ? $data['phone'] : $record[3];
+                $record[4] = isset($data['email']) ? $data['email'] : $record[4];
+                $record[5] = isset($data['membership-date']) ? $data['membership-date'] : $record[5];
             }
         }
 

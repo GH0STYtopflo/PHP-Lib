@@ -2,16 +2,18 @@
 
 namespace Gh0stytopflo\PhpLib\Exception;
 
+use Gh0stytopflo\PhpLib\Model\Book;
 use RuntimeException;
 
 class BorrowingBorrowedBookException extends RuntimeException
 {
-    public function __construct(
-        string $message = 'You cannot borrow this book',
-        ?int $line = null
-    ) {
-        $this->code = 0;
+    public function __construct(Book $book, ?int $code = null, ?int $line = null)
+    {
         $this->line = isset($line) ? $line : -1;
-        $this->message = $message;
+        $this->code = isset($code) ? $code : 0;
+
+        $this->message = "You cannot borrow \e[0;33m" . $book->getTitle() . "\e[0m {" .
+        $book->getBookId() . '}' .
+        ". It is currently borrowed by member \e[0;33m" . (int) $book->getMemberId() . "\e[0m";
     }
 }
