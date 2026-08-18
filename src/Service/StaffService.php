@@ -2,6 +2,7 @@
 
 namespace Gh0stytopflo\PhpLib\Service;
 
+use Gh0stytopflo\PhpLib\Exception\RequiredPropertyNotProvidedException;
 use Gh0stytopflo\PhpLib\Model\Staff;
 use Gh0stytopflo\PhpLib\Persistence\StaffHandle;
 
@@ -10,39 +11,27 @@ class StaffService
     public static function add(array $data): void
     {
         if (!isset($data['name'])) {
-            return;
-
-            // TODO: Throw exception
+            throw new RequiredPropertyNotProvidedException('name', line: __LINE__);
         }
 
         if (!isset($data['lname'])) {
-            return;
-
-            // TODO: Throw exception
+            throw new RequiredPropertyNotProvidedException('lname', line: __LINE__);
         }
 
         if (!isset($data['email'])) {
-            return;
-
-            // TODO: Throw exception
+            throw new RequiredPropertyNotProvidedException('email', line: __LINE__);
         }
 
         if (!isset($data['position-title'])) {
-            return;
-
-            // TODO: Throw exception
+            throw new RequiredPropertyNotProvidedException('position-title', line: __LINE__);
         }
 
         if (!isset($data['shift-start'])) {
-            return;
-
-            // TODO: Throw exception
+            throw new RequiredPropertyNotProvidedException('shift-start', line: __LINE__);
         }
 
         if (!isset($data['shift-end'])) {
-            return;
-
-            // TODO: Throw exception
+            throw new RequiredPropertyNotProvidedException('shift-end', line: __LINE__);
         }
 
         StaffHandle::append(new Staff(
@@ -86,5 +75,25 @@ class StaffService
         }
 
         return $staff;
+    }
+
+    public static function edit(
+        Staff $staff,
+        array $data
+    ): void {
+        $csvRecords = StaffHandle::readAll();
+
+        foreach ($csvRecords as &$record) {
+            if ($record[0] == $staff->getStaffId()) {
+                $record[1] = isset($data['name']) ? $data['name'] : $staff->getName();
+                $record[2] = isset($data['lname']) ? $data['lname'] : $staff->getLastname();
+                $record[3] = isset($data['position-title']) ? $data['position-title'] : $staff->getPositionTitle();
+                $record[4] = isset($data['email']) ? $data['email'] : $staff->getEmail();
+                $record[5] = isset($data['shift-start']) ? mktime($data['shift-start']) : $staff->getShiftStart();
+                $record[6] = isset($data['shift-end']) ? mktime($data['shift-start']) : $staff->getShiftEnd();
+
+                break;
+            }
+        }
     }
 }

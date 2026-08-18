@@ -49,6 +49,11 @@ class LibraryService
         LibraryHandle::save($library);
     }
 
+    public static function remove(): void
+    {
+        LibraryHandle::delete();
+    }
+
     public static function read(): Library
     {
         $aarr = LibraryHandle::read();
@@ -56,13 +61,13 @@ class LibraryService
         return Library::mapArrayToInstance($aarr);
     }
 
-    public function editLibrary(array $data): void
+    public static function edit(array $data): void
     {
         $library = self::read();
 
         $library->setName(isset($data['name']) ? $data['name'] : $library->getName());
         $library->setAddress(isset($data['address']) ? $data['address'] : $library->getAddress());
-        $library->setOpen(isset($data['open']) ? $data['open'] : $library->getOpen());
-        $library->setClose(isset($data['close']) ? $data['close'] : $library->getClose());
+        $library->setOpen(isset($data['open']) ? strtotime($data['open']) : $library->getOpen());
+        $library->setClose(isset($data['close']) ? strtotime($data['close']) : $library->getClose());
     }
 }

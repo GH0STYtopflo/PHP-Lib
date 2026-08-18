@@ -69,7 +69,7 @@ class BookService
         }
 
         $records = BookHandle::search(
-            (int) isset($data['id']) ? $data['id'] : null,
+            isset($data['book-id']) ? (int) $data['book-id'] : null,
             isset($data['title']) ? $data['title'] : null,
             isset($data['author']) ? $data['author'] : null,
             isset($data['year']) ? $data['year'] : null,
@@ -86,7 +86,7 @@ class BookService
     }
 
 
-    public static function borrowBook(Book $book, Member $member, int $returnDate)
+    public static function borrowBook(Book $book, Member $member, array $data)
     {
         $csvRecords = BookHandle::readAll();
 
@@ -96,7 +96,7 @@ class BookService
                 if (!is_numeric($record[6])) {
                     $record[6] = $member->getMemberId();
                     $record[7] = time();
-                    $record[8] = $returnDate;
+                    $record[8] = $data['return-date'];
                 } else {
                     throw new BorrowingBorrowedBookException($book, line: __LINE__);
                 }

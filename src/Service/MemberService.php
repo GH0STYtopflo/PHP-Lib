@@ -41,10 +41,8 @@ class MemberService
             $csvRecords = MemberHandle::readAll();
 
             foreach ($csvRecords as $i => &$record) {
-                if ($record[6] == $member->getMemberId()) {
-                    array_splice($csvRecords, $i, 1);
-                    break;
-                }
+                array_splice($csvRecords, $i, 1);
+                break;
             }
         } else {
             throw new MemberWithBorrowedBookDelException($member, __LINE__);
@@ -69,12 +67,12 @@ class MemberService
     public static function search(array $data): array
     {
         $csvRecords = MemberHandle::search(
-            id: isset($data['member-id']) ? $data['member-id'] : null,
+            id: isset($data['member-id']) ? (int) $data['member-id'] : null,
             name: isset($data['name']) ? $data['name'] : null,
             lname: isset($data['lname']) ? $data['lname'] : null,
             phone: isset($data['phone']) ? $data['phone'] : null,
             email: isset($data['email']) ? $data['email'] : null,
-            date: isset($data['membership-date']) ? $data['membership-date'] : null,
+            date: isset($data['membership-date']) ? (int) $data['membership-date'] : null,
         );
 
         $members = [];

@@ -25,4 +25,10 @@ class LibraryHandle
 
         return $aarr;
     }
+
+    public static function delete(): void
+    {
+        $file = fopen(self::PATH_TO_FILE, w);
+        fwrite($file, '');
+    }
 }
