@@ -3,6 +3,7 @@
 namespace Gh0stytopflo\PhpLib\Persistence;
 
 use Gh0stytopflo\PhpLib\Model\Model;
+use Gh0stytopflo\PhpLib\Util\LockFile;
 
 trait HandleTrait
 {
@@ -10,7 +11,11 @@ trait HandleTrait
     {
         $file = fopen(self::PATH_TO_FILE, 'a+');
 
+        LockFile::lock(self::PATH_TO_FILE);
+
         fputcsv($file, $data->getPropertiesArray(), ',');
+
+        LockFile::release(self::PATH_TO_FILE);
     }
 
     public static function readAll(): array
@@ -33,8 +38,12 @@ trait HandleTrait
     {
         $file = fopen(self::PATH_TO_FILE, 'w+');
 
+        LockFile::lock(self::PATH_TO_FILE);
+
         foreach ($records as $record) {
             fputcsv($file, $record, ',');
         }
+
+        LockFile::release(self::PATH_TO_FILE);
     }
 }

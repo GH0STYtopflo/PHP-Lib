@@ -3,6 +3,7 @@
 namespace Gh0stytopflo\PhpLib\Persistence;
 
 use Gh0stytopflo\PhpLib\Model\Library;
+use Gh0stytopflo\PhpLib\Util\LockFile;
 
 class LibraryHandle
 {
@@ -11,9 +12,14 @@ class LibraryHandle
     public static function save(Library $library): void
     {
         $file = fopen(self::PATH_TO_FILE, 'w');
+
+        LockFile::lock(self::PATH_TO_FILE);
+
         $json = json_encode($library, JSON_PRETTY_PRINT);
 
         fwrite($file, $json);
+
+        LockFile::release(self::PATH_TO_FILE);
     }
 
     public static function read(): array | false
@@ -29,6 +35,11 @@ class LibraryHandle
     public static function delete(): void
     {
         $file = fopen(self::PATH_TO_FILE, w);
+
+        LockFile::lock(self::PATH_TO_FILE);
+
         fwrite($file, '');
+
+        LockFile::release(self::PATH_TO_FILE);
     }
 }
