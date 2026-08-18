@@ -6,7 +6,7 @@ use Gh0stytopflo\PhpLib\Model\Library;
 
 class LibraryHandle
 {
-    private const PATH_TO_FILE = __DIR__ . '/../../library.json';
+    public const PATH_TO_FILE = __DIR__ . '/../../library.json';
 
     public static function save(Library $library): void
     {
