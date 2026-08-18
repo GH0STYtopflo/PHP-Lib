@@ -16,6 +16,7 @@ class Ledger
 {
     public static function execute(array $args): void
     {
+        Bootstrap::setup();
         array_shift($args);
 
         $command = Parser::parse($args);
@@ -107,7 +108,7 @@ class Ledger
         $data = self::pinpointOn($target, $on);
 
         if (!isset($data) && $data !== Target::LIBRARY) {
-            echo "Found 0 results for target" . $target->name . ". Aborting";
+            echo "Found 0 results for target " . $target->name . ". Aborting";
             return;
         }
 
@@ -214,7 +215,7 @@ class Ledger
             return $results[0];
         } elseif (count($results) > 1) {
             echo "Found more than 1 results\n";
-            Present::printPrettiy($results);
+            //Present::printPrettiy($results);
 
             return $results[self::getSelection(count($results))];
         }
@@ -222,7 +223,7 @@ class Ledger
 
     private static function getSelection(int $bound): int
     {
-        echo "Choose an option[0 - " . $bound . "]";
+        echo "Choose an option[0 - " . $bound . "]: ";
         $selected = fgets(STDIN);
 
         if (!is_numeric($selected) || (int) $selected > $bound) {

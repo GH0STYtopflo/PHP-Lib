@@ -26,9 +26,9 @@ class Parser
         $target = null;
         $on = [];
 
-        foreach ($args as $arg) {
+        for ($i = 0; $i < count($args); $i++) {
             if (!isset($operation)) {
-                $operation = match ($arg) {
+                $operation = match ($args[$i]) {
                     '-S' => Operation::SEARCH,
                     '-A' => Operation::ADD,
                     '-D' => Operation::DELETE,
@@ -36,41 +36,37 @@ class Parser
                     '-L' => Operation::LIST,
                     '-B' => Operation::BORROW,
                     '-R' => Operation::RETURN,
-                    default => $arg,
+                    default => $args[$i],
                 };
             } else {
                 // TODO: Throw multiple ops exception
             }
 
-            if (str_contains($arg, '--target=')) {
+            if (str_contains($args[$i], '--target=')) {
                 if (!isset($target)) {
-                    $target = match (explode('=', $arg)[1]) {
+                    $target = match (explode('=', $args[$i])[1]) {
                         'book' => Target::BOOK,
                         'member' => Target::MEMBER,
                         'staff' => Target::STAFF,
                         'library' => Target::LIBRARY,
-                        default => $arg,
+                        default => $args[$i],
                     };
                 } else {
                     // TODO: THROW multiple targets exception
                 }
             }
 
-            if (str_contains($arg, '--') && !str_contains($arg, '--target=') && !str_contains($arg, '--on(')) {
-                if (str_contains($arg, '=')) {
-                    $keyVal = explode('=', $arg);
+            if (str_contains($args[$i], '--') && !str_contains($args[$i], '--target=')) {
+                if (str_contains($args[$i], '=')) {
+                    $keyVal = explode('=', $args[$i]);
                     $options[substr($keyVal[0], 2)] = $keyVal[1];
                 } else {
-                    $flags[] = substr($arg, 2);
+                    $flags[] = substr($args[$i], 2);
                 }
             }
 
-            if (str_contains($arg, '--on[')) {
-                $expr = explode('[', $arg)[1];
-
-                if (!str_contains($expr, ']')) {
-                    // TODO: throw exception
-                }
+            if (str_contains($args[$i], '--on')) {
+                $expr = $args[++$i];
 
                 foreach (explode(' ', $expr) as $keyVal) {
                     if (str_contains($keyVal, '--') && str_contains($keyVal, '=')) {

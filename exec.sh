@@ -1,3 +1,3 @@
 #! /bin/env bash
 
-php -f src/Cli/Start.php -- $@
+php -f src/Cli/Start.php -- "$@"
