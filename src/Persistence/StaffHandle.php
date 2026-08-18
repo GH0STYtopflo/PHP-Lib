@@ -24,16 +24,15 @@ class StaffHandle implements Handle
         $file = fopen(self::PATH_TO_FILE, 'r+');
         $csvRecords = [];
 
-        while (feof($file)) {
+        while (!feof($file)) {
             $record = fgetcsv($file, 0, ',');
-
             if (!is_bool($record)) {
                 if (
-                    (!isset($id) || $staffId == $record[0])
+                    (!isset($staffId) || $staffId == $record[0])
                     && (!isset($name) || str_contains(strtolower($record[1]), strtolower($name)))
                     && (!isset($lname) || str_contains(strtolower($record[2]), strtolower($lname)))
                     && (!isset($positionTitle) || str_contains(strtolower($record[3]), strtolower($positionTitle)))
-                    && (!isset($email) || str_contains(strtolower($record[4]), strtolower($email)))
+                    && (!isset($email) || $record[4] == $email)
                     && (!isset($shiftStart) || $shiftStart == $record[5])
                     && (!isset($shiftEnd) || $shiftEnd == $record[6])
                 ) {

@@ -11,7 +11,8 @@ class Validate
     private const ADD_AND_SEARCHTARGETS = [
         Target::MEMBER,
         Target::BOOK,
-        Target::STAFF
+        Target::STAFF,
+        Target::LIBRARY
     ];
 
     private const BORROW_AND_RETURN_TARGETS = [

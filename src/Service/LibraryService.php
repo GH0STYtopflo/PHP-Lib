@@ -16,13 +16,10 @@ class LibraryService
         }
 
         if (!isset($data['address'])) {
-            return;
-
             throw new RequiredPropertyNotProvidedException('address', line: __LINE__);
         }
 
         if (!isset($data['open'])) {
-            return;
             throw new RequiredPropertyNotProvidedException('open', line: __LINE__);
         }
 
@@ -30,20 +27,30 @@ class LibraryService
             throw new RequiredPropertyNotProvidedException('close', line: __LINE__);
         }
 
-        if (!is_numeric($data['open'])) {
-            throw new TypeMismatchException('open', 'integer', gettype($data['open']), line: __LINE__);
+        if (!strtotime($data['open']) || !str_contains($data['open'], ':')) {
+            throw new TypeMismatchException(
+                'open',
+                'temporal string (HH:mm)',
+                gettype($data['open']) . " (" . ($data['open']) . ")",
+                line: __LINE__
+            );
         }
 
-        if (!is_numeric($data['close'])) {
-            throw new TypeMismatchException('close', 'integer', gettype($data['close']), line: __LINE__);
+        if (!strtotime($data['close']) || !str_contains($data['close'], ':')) {
+            throw new TypeMismatchException(
+                'close',
+                'temporal string [HH:mm]',
+                gettype($data['close']) . " [" . ($data['close']) . "]",
+                line: __LINE__
+            );
         }
 
 
         $library = new Library(
             $data['name'],
             $data['address'],
-            $data['open'],
-            $data['close']
+            strtotime($data['open']),
+            strtotime($data['close'])
         );
 
         LibraryHandle::save($library);
@@ -69,5 +76,7 @@ class LibraryService
         $library->setAddress(isset($data['address']) ? $data['address'] : $library->getAddress());
         $library->setOpen(isset($data['open']) ? strtotime($data['open']) : $library->getOpen());
         $library->setClose(isset($data['close']) ? strtotime($data['close']) : $library->getClose());
+
+        LibraryHandle::save($library);
     }
 }

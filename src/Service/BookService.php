@@ -72,8 +72,8 @@ class BookService
             isset($data['book-id']) ? (int) $data['book-id'] : null,
             isset($data['title']) ? $data['title'] : null,
             isset($data['author']) ? $data['author'] : null,
-            isset($data['year']) ? $data['year'] : null,
-            isset($data['printing']) ? $data['printing'] : null,
+            isset($data['year']) ? (int) $data['year'] : null,
+            isset($data['printing']) ? (int) $data['printing'] : null,
             isset($data['genre']) ? $data['genre'] : null
         );
         $books = [];
@@ -89,6 +89,7 @@ class BookService
     public static function borrowBook(Book $book, Member $member, array $data)
     {
         $csvRecords = BookHandle::readAll();
+        //TODO: Check if return-date is sent
 
         foreach ($csvRecords as &$record) {
             if ($record[0] == $book->getBookId()) {

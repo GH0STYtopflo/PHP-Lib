@@ -32,7 +32,7 @@ class MemberHandle implements Handle
                     && (!isset($name) || str_contains(strtolower($record[1]), strtolower($name)))
                     && (!isset($lname) || str_contains(strtolower($record[2]), strtolower($lname)))
                     && (!isset($phone) || $phone == $record[3])
-                    && (!isset($email) || $phone == $record[4])
+                    && (!isset($email) || $email == $record[4])
                     && (!isset($date) || $date == $record[5])
                 ) {
                     $records[] = $record;

@@ -39,13 +39,13 @@ class Staff extends Person
     public static function mapArrayToInstance(array $csvRecord): self
     {
         return new self(
-            staffId: $csvRecord[0],
+            staffId: (int) $csvRecord[0],
             name: $csvRecord[1],
             lname: $csvRecord[2],
             positionTitle: $csvRecord[3],
             email: $csvRecord[4],
-            shiftStart: $csvRecord[5],
-            shiftEnd: $csvRecord[6]
+            shiftStart: (int) $csvRecord[5],
+            shiftEnd: (int) $csvRecord[6]
         );
     }
 

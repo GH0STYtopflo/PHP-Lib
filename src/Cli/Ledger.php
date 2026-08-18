@@ -105,9 +105,9 @@ class Ledger
 
     private static function callDelete(Target $target, array $options, array $on): void
     {
-        $data = self::pinpointOn($target, $on);
+        $data = Target::LIBRARY == $target ? null : self::pinpointOn($target, $on);
 
-        if (!isset($data) && $data !== Target::LIBRARY) {
+        if ($target !== Target::LIBRARY & !isset($data)) {
             echo "Found 0 results for target " . $target->name . ". Aborting";
             return;
         }
@@ -178,7 +178,8 @@ class Ledger
             $data = match ($target) {
                 Target::BOOK => BookService::search($options),
                 Target::MEMBER => MemberService::search($options),
-                Target::STAFF => StaffService::search($options)
+                Target::STAFF => StaffService::search($options),
+                Target::LIBRARY => LibraryService::read()
             };
         } catch (RuntimeException $e) {
             echo $e->getMessage();
@@ -205,9 +206,13 @@ class Ledger
         return $data;
     }
 
-    private static function pinpointOn(Target $target, array $on): Model | null
+    private static function pinpointOn(Target $target, array $on): Model | null | Library
     {
         $results = self::callSearch($target, $on);
+
+        if ($results instanceof Library) {
+            return $results;
+        }
 
         if (count($results) == 0) {
             return null;
@@ -215,9 +220,9 @@ class Ledger
             return $results[0];
         } elseif (count($results) > 1) {
             echo "Found more than 1 results\n";
-            //Present::printPrettiy($results);
-
-            return $results[self::getSelection(count($results))];
+            Present::printPrettiy($results);
+            $selected = $results[self::getSelection(count($results) - 1)];
+            return $selected;
         }
     }
 

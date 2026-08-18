@@ -40,9 +40,11 @@ class MemberService
         if (!self::hasBorrowedBookHook($member->getMemberId())) {
             $csvRecords = MemberHandle::readAll();
 
-            foreach ($csvRecords as $i => &$record) {
-                array_splice($csvRecords, $i, 1);
-                break;
+            foreach ($csvRecords as $i => $record) {
+                if ($member->getMemberId() == $record[0]) {
+                    array_splice($csvRecords, $i, 1);
+                    break;
+                }
             }
         } else {
             throw new MemberWithBorrowedBookDelException($member, __LINE__);
@@ -72,7 +74,7 @@ class MemberService
             lname: isset($data['lname']) ? $data['lname'] : null,
             phone: isset($data['phone']) ? $data['phone'] : null,
             email: isset($data['email']) ? $data['email'] : null,
-            date: isset($data['membership-date']) ? (int) $data['membership-date'] : null,
+            date: isset($data['membership-date']) ? strtotime($data['membership-date']) : null,
         );
 
         $members = [];
@@ -93,7 +95,7 @@ class MemberService
         foreach ($csvRecords as &$record) {
             if ($record[0] == $member->getMemberId()) {
                 $record[1] = isset($data['name']) ? $data['name'] : $record[1];
-                $record[2] = isset($data['lname']) ? $data['lanme'] : $record[2];
+                $record[2] = isset($data['lname']) ? $data['lname'] : $record[2];
                 $record[3] = isset($data['phone']) ? $data['phone'] : $record[3];
                 $record[4] = isset($data['email']) ? $data['email'] : $record[4];
                 $record[5] = isset($data['membership-date']) ? $data['membership-date'] : $record[5];

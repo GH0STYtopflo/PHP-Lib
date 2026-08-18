@@ -32,7 +32,7 @@ class BookHandle implements Handle
                     && (!isset($title) || str_contains(strtolower($record[1]), strtolower($title)))
                     && (!isset($author) || str_contains(strtolower($record[2]), strtolower($author)))
                     && (!isset($year) || $year == $record[3])
-                    && (!isset($printing) || $year == $record[4])
+                    && (!isset($printing) || $printing == $record[4])
                     && (!isset($genre) || str_contains(strtolower($record[5]), strtolower($genre)))
                 ) {
                     $records[] = $record;

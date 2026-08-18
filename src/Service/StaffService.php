@@ -3,6 +3,7 @@
 namespace Gh0stytopflo\PhpLib\Service;
 
 use Gh0stytopflo\PhpLib\Exception\RequiredPropertyNotProvidedException;
+use Gh0stytopflo\PhpLib\Exception\TypeMismatchException;
 use Gh0stytopflo\PhpLib\Model\Staff;
 use Gh0stytopflo\PhpLib\Persistence\StaffHandle;
 
@@ -26,12 +27,22 @@ class StaffService
             throw new RequiredPropertyNotProvidedException('position-title', line: __LINE__);
         }
 
-        if (!isset($data['shift-start'])) {
-            throw new RequiredPropertyNotProvidedException('shift-start', line: __LINE__);
+        if (!strtotime($data['shift-start']) || !str_contains($data['shift-start'], ':')) {
+                    throw new TypeMismatchException(
+                        'shift-start',
+                        'temporal string [HH:mm]',
+                        gettype($data['shift-start']) . " [" . ($data['shift-start']) . "]",
+                        line: __LINE__
+                    );
         }
 
-        if (!isset($data['shift-end'])) {
-            throw new RequiredPropertyNotProvidedException('shift-end', line: __LINE__);
+        if (!strtotime($data['shift-end']) || !str_contains($data['shift-end'], ':')) {
+                    throw new TypeMismatchException(
+                        'shift-end',
+                        'temporal string [HH:mm]',
+                        gettype($data['shift-end']) . " [" . ($data['shift-end']) . "]",
+                        line: __LINE__
+                    );
         }
 
         StaffHandle::append(new Staff(
@@ -39,8 +50,8 @@ class StaffService
             lname: $data['lname'],
             positionTitle:  $data['position-title'],
             email:  $data['email'],
-            shiftStart: $data['shift-start'],
-            shiftEnd: $data['shift-end']
+            shiftStart: strtotime($data['shift-start']),
+            shiftEnd: strtotime($data['shift-end'])
         ));
     }
 
@@ -50,7 +61,7 @@ class StaffService
 
         foreach ($csvRecords as $i => $record) {
             if ($record[0] == $staff->getStaffId()) {
-                array_splice($csvRecords, $i);
+                array_splice($csvRecords, $i, 1);
                 break;
             }
         }
@@ -65,8 +76,8 @@ class StaffService
             lname: isset($data['lname']) ? $data['lname'] : null,
             positionTitle:  isset($data['position-title']) ? $data['position-title'] : null,
             email:  isset($data['email']) ? $data['email'] : null,
-            shiftStart: isset($data['shift-start']) ? $data['shift-start'] : null,
-            shiftEnd: isset($data['shift-end']) ? $data['shift-end'] : null
+            shiftStart: isset($data['shift-start']) ? strtotime($data['shift-start']) : null,
+            shiftEnd: isset($data['shift-end']) ? strtotime($data['shift-start']) : null
         );
         $staff = [];
 
@@ -95,5 +106,7 @@ class StaffService
                 break;
             }
         }
+
+        StaffHandle::writeAll($csvRecords);
     }
 }

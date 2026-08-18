@@ -46,7 +46,6 @@ class Book extends Model
 
     public static function mapArrayToInstance(array $csvRecord): self
     {
-        // TODO: Throw an exception for invalid input
         return new self(
             bookId: (int) $csvRecord[0],
             title: $csvRecord[1],

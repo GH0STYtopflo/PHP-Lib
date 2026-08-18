@@ -26,7 +26,7 @@ class LibraryHandle
     {
         $file = fopen(self::PATH_TO_FILE, 'r');
 
-        $json = fread($file, filesize(self::PATH_TO_FILE));
+        $json = file_get_contents(self::PATH_TO_FILE);
         $aarr = json_decode($json, true);
 
         return $aarr;
@@ -34,7 +34,7 @@ class LibraryHandle
 
     public static function delete(): void
     {
-        $file = fopen(self::PATH_TO_FILE, w);
+        $file = fopen(self::PATH_TO_FILE, 'w');
 
         LockFile::lock(self::PATH_TO_FILE);
 

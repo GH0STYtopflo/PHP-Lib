@@ -11,6 +11,6 @@ class TypeMismatchException extends RuntimeException
         $this->line = isset($line) ? $line : -1;
         $this->code = isset($code) ? $code : 0;
 
-        $this->message = "Expected \e[0;32m" . $expected . " type \e[0m" . "For property '$varName' got \e[0;31m$actual\e[0m";
+        $this->message = "Expected \e[0;32m" . $expected . "\e[0m type " . "For property '$varName' got \e[0;31m$actual\e[0m";
     }
 }

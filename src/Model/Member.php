@@ -40,12 +40,12 @@ class Member extends Person
     public static function mapArrayToInstance(array $csvRecord): self
     {
         return new self(
-            memberId: $csvRecord[0],
+            memberId: (int) $csvRecord[0],
             name: $csvRecord[1],
             lname: $csvRecord[2],
             phone: $csvRecord[3],
             email: !empty($csvRecord[4]) ? $csvRecord[4] : null,
-            membershipStartDate: $csvRecord[5]
+            membershipStartDate: (int) $csvRecord[5]
         );
     }
 
