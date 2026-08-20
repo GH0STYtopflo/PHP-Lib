@@ -11,6 +11,8 @@ class Bootstrap
 {
     public static function setup(): void
     {
+        date_default_timezone_set('Asia/Tehran');
+
         if (!file_exists(LibraryHandle::PATH_TO_FILE)) {
             touch(LibraryHandle::PATH_TO_FILE);
         }

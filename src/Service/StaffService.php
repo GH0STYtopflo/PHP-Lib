@@ -2,6 +2,8 @@
 
 namespace Gh0stytopflo\PhpLib\Service;
 
+use Gh0stytopflo\PhpLib\Exception\InvalidOpenAndCloseException;
+use Gh0stytopflo\PhpLib\Exception\InvalidShiftStartAndEndException;
 use Gh0stytopflo\PhpLib\Exception\RequiredPropertyNotProvidedException;
 use Gh0stytopflo\PhpLib\Exception\TypeMismatchException;
 use Gh0stytopflo\PhpLib\Model\Staff;
@@ -10,6 +12,20 @@ use Gh0stytopflo\PhpLib\Persistence\StaffHandle;
 class StaffService
 {
     public static function add(array $data): void
+    {
+        self::addCheckHook($data);
+
+        StaffHandle::append(new Staff(
+            name: $data['name'],
+            lname: $data['lname'],
+            positionTitle:  $data['position-title'],
+            email:  $data['email'],
+            shiftStart: $data['shift-start'],
+            shiftEnd: $data['shift-end']
+        ));
+    }
+
+    private static function addCheckHook(array $data): void
     {
         if (!isset($data['name'])) {
             throw new RequiredPropertyNotProvidedException('name', line: __LINE__);
@@ -28,31 +44,26 @@ class StaffService
         }
 
         if (!strtotime($data['shift-start']) || !str_contains($data['shift-start'], ':')) {
-                    throw new TypeMismatchException(
-                        'shift-start',
-                        'temporal string [HH:mm]',
-                        gettype($data['shift-start']) . " [" . ($data['shift-start']) . "]",
-                        line: __LINE__
-                    );
+            throw new TypeMismatchException(
+                'shift-start',
+                'temporal string [HH:mm]',
+                gettype($data['shift-start']) . " [" . ($data['shift-start']) . "]",
+                line: __LINE__
+            );
         }
 
         if (!strtotime($data['shift-end']) || !str_contains($data['shift-end'], ':')) {
-                    throw new TypeMismatchException(
-                        'shift-end',
-                        'temporal string [HH:mm]',
-                        gettype($data['shift-end']) . " [" . ($data['shift-end']) . "]",
-                        line: __LINE__
-                    );
+            throw new TypeMismatchException(
+                'shift-end',
+                'temporal string [HH:mm]',
+                gettype($data['shift-end']) . " [" . ($data['shift-end']) . "]",
+                line: __LINE__
+            );
         }
 
-        StaffHandle::append(new Staff(
-            name: $data['name'],
-            lname: $data['lname'],
-            positionTitle:  $data['position-title'],
-            email:  $data['email'],
-            shiftStart: strtotime($data['shift-start']),
-            shiftEnd: strtotime($data['shift-end'])
-        ));
+        if ((strtotime($data['shift-end']) < strtotime($data['shift-start']))) {
+            throw new InvalidShiftStartAndEndException($data['shift-end'],$data['shift-start'], line: __LINE__);
+        }
     }
 
     public static function remove(Staff $staff)
@@ -92,6 +103,8 @@ class StaffService
         Staff $staff,
         array $data
     ): void {
+        self::editCheckHook($data);
+
         $csvRecords = StaffHandle::readAll();
 
         foreach ($csvRecords as &$record) {
@@ -100,13 +113,38 @@ class StaffService
                 $record[2] = isset($data['lname']) ? $data['lname'] : $staff->getLastname();
                 $record[3] = isset($data['position-title']) ? $data['position-title'] : $staff->getPositionTitle();
                 $record[4] = isset($data['email']) ? $data['email'] : $staff->getEmail();
-                $record[5] = isset($data['shift-start']) ? mktime($data['shift-start']) : $staff->getShiftStart();
-                $record[6] = isset($data['shift-end']) ? mktime($data['shift-start']) : $staff->getShiftEnd();
+                $record[5] = isset($data['shift-start']) ? $data['shift-start'] : $staff->getShiftStart();
+                $record[6] = isset($data['shift-end']) ? $data['shift-end'] : $staff->getShiftEnd();
 
                 break;
             }
         }
 
         StaffHandle::writeAll($csvRecords);
+    }
+
+    private static function editCheckHook(array $data): void
+    {
+        if (isset($data['shift-start']) && (!strtotime($data['shift-start']) || !str_contains($data['shift-start'], ':'))) {
+            throw new TypeMismatchException(
+                'shift-start',
+                'temporal string [HH:mm]',
+                gettype($data['shift-start']) . " [" . ($data['shift-start']) . "]",
+                line: __LINE__
+            );
+        }
+
+        if (isset($data['shift-end']) && (!strtotime($data['shift-end']) || !str_contains($data['shift-end'], ':'))) {
+            throw new TypeMismatchException(
+                'shift-end',
+                'temporal string [HH:mm]',
+                gettype($data['shift-end']) . " [" . ($data['shift-end']) . "]",
+                line: __LINE__
+            );
+        }
+
+        if ((isset($data['shift-end']) && isset($data['shift-start']))  && ((strtotime($data['shift-end']) < strtotime($data['shift-start'])))) {
+            throw new InvalidShiftStartAndEndException($data['shift-end'],$data['shift-start'], line: __LINE__);
+        }
     }
 }

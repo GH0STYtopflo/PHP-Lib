@@ -11,16 +11,16 @@ class Staff extends Person
     private int $staffId;
     private string $positionTitle;
     private string $email;
-    private int $shiftStart;
-    private int $shiftEnd;
+    private string $shiftStart;
+    private string $shiftEnd;
 
     public function __construct(
         string $name,
         string $lname,
         string $positionTitle,
         string $email,
-        int $shiftStart,
-        int $shiftEnd,
+        string $shiftStart,
+        string $shiftEnd,
         ?int $staffId = null
     ) {
         if (isset($staffId)) {
@@ -44,8 +44,8 @@ class Staff extends Person
             lname: $csvRecord[2],
             positionTitle: $csvRecord[3],
             email: $csvRecord[4],
-            shiftStart: (int) $csvRecord[5],
-            shiftEnd: (int) $csvRecord[6]
+            shiftStart: $csvRecord[5],
+            shiftEnd: $csvRecord[6]
         );
     }
 
@@ -88,24 +88,24 @@ class Staff extends Person
         return $this;
     }
 
-    public function getShiftStart(): int
+    public function getShiftStart(): string
     {
         return $this->shiftStart;
     }
 
-    public function setShiftStart(int $shiftStart): self
+    public function setShiftStart(string $shiftStart): self
     {
         $this->shiftStart = $shiftStart;
 
         return $this;
     }
 
-    public function getShiftEnd(): int
+    public function getShiftEnd(): string
     {
         return $this->shiftEnd;
     }
 
-    public function setShiftEnd(int $shiftEnd): self
+    public function setShiftEnd(string $shiftEnd): self
     {
         $this->shiftEnd = $shiftEnd;
 

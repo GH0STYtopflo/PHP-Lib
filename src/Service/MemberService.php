@@ -4,6 +4,7 @@ namespace Gh0stytopflo\PhpLib\Service;
 
 use Gh0stytopflo\PhpLib\Exception\MemberWithBorrowedBookDelException;
 use Gh0stytopflo\PhpLib\Exception\RequiredPropertyNotProvidedException;
+use Gh0stytopflo\PhpLib\Exception\TypeMismatchException;
 use Gh0stytopflo\PhpLib\Model\Member;
 use Gh0stytopflo\PhpLib\Persistence\BookHandle;
 use Gh0stytopflo\PhpLib\Persistence\MemberHandle;
@@ -24,12 +25,21 @@ class MemberService
             throw new RequiredPropertyNotProvidedException('phone', line: __LINE__);
         }
 
+        if (isset($data['membership-date']) && !strtotime($data['membership-date'])) {
+            throw new TypeMismatchException(
+                'membership-date',
+                'temporal string (Y/m/d)',
+                gettype($data['membership-date']) . " (" . ($data['membership-date']) . ")",
+                line: __LINE__
+            );
+        }
+
         $member = new Member(
             name: $data['name'],
             lname: $data['lname'],
             phone: $data['phone'],
             email: isset($data['email']) ? $data['email'] : null,
-            membershipStartDate: isset($data['membership-date']) ? $data['membership-date'] : null,
+            membershipStartDate: isset($data['membership-date']) ? date('Y/m/d', strtotime($data['membership-date'])): null,
         );
 
         MemberHandle::append($member);
@@ -74,7 +84,6 @@ class MemberService
             lname: isset($data['lname']) ? $data['lname'] : null,
             phone: isset($data['phone']) ? $data['phone'] : null,
             email: isset($data['email']) ? $data['email'] : null,
-            date: isset($data['membership-date']) ? strtotime($data['membership-date']) : null,
         );
 
         $members = [];

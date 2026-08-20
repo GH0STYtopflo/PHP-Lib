@@ -4,6 +4,7 @@ namespace Gh0stytopflo\PhpLib\Service;
 
 use Gh0stytopflo\PhpLib\Exception\BorrowedBookDeletionException;
 use Gh0stytopflo\PhpLib\Exception\BorrowingBorrowedBookException;
+use Gh0stytopflo\PhpLib\Exception\InvalidDateException;
 use Gh0stytopflo\PhpLib\Exception\RequiredPropertyNotProvidedException;
 use Gh0stytopflo\PhpLib\Exception\ReturningNotBorrowedBookException;
 use Gh0stytopflo\PhpLib\Exception\TypeMismatchException;
@@ -88,16 +89,27 @@ class BookService
 
     public static function borrowBook(Book $book, Member $member, array $data)
     {
+        if (!isset($data['return-date'])) {
+            throw new RequiredPropertyNotProvidedException(varName: 'return-date', line: __LINE__);
+        }
+        if (!strtotime($data['return-date'])) {
+            throw new TypeMismatchException(
+                'return-date',
+                'temporal string (Y/m/d)',
+                gettype($data['return-date']) . " (" . ($data['return-date']) . ")",
+                line: __LINE__
+            );
+        }
+
         $csvRecords = BookHandle::readAll();
-        //TODO: Check if return-date is sent
 
         foreach ($csvRecords as &$record) {
             if ($record[0] == $book->getBookId()) {
                 // Prevent borrowing a book that's already been borrowed
                 if (!is_numeric($record[6])) {
                     $record[6] = $member->getMemberId();
-                    $record[7] = time();
-                    $record[8] = $data['return-date'];
+                    $record[7] = date('Y/m/d', time());
+                    $record[8] = date('Y/m/d', strtotime($data['return-date']));
                 } else {
                     throw new BorrowingBorrowedBookException($book, line: __LINE__);
                 }
@@ -119,7 +131,7 @@ class BookService
                 if (is_numeric($record[6])) {
                     $record[6] = '';
                     $record[7] = '';
-                    $record[8] = time();
+                    $record[8] = date('Y/m/d', time());
                 } else {
                     throw new ReturningNotBorrowedBookException($book, line: __LINE__);
                 }

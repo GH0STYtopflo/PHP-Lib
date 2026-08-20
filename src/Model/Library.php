@@ -8,10 +8,10 @@ class Library implements JsonSerializable
 {
     private string $name;
     private string $address;
-    private int $open;
-    private int $close;
+    private string $open;
+    private string $close;
 
-    public function __construct(string $name, string $address, int $open, int $close)
+    public function __construct(string $name, string $address, string $open, string $close)
     {
         $this->name = $name;
         $this->address = $address;
@@ -21,7 +21,12 @@ class Library implements JsonSerializable
 
     public static function mapArrayToInstance(array $aarr): self
     {
-        return new self($aarr['name'], $aarr['address'], $aarr['open'], $aarr['close']);
+        return new self(
+            $aarr['name'],
+            $aarr['address'],
+            $aarr['open'],
+            $aarr['close']
+        );
     }
 
     public function jsonSerialize(): mixed
@@ -53,24 +58,24 @@ class Library implements JsonSerializable
         return $this;
     }
 
-    public function getOpen(): int
+    public function getOpen(): string
     {
         return $this->open;
     }
 
-    public function setOpen(int $open): self
+    public function setOpen(string $open): self
     {
         $this->open = $open;
 
         return $this;
     }
 
-    public function getClose(): int
+    public function getClose(): string
     {
         return $this->close;
     }
 
-    public function setClose(int $close): self
+    public function setClose(string $close): self
     {
         $this->close = $close;
 

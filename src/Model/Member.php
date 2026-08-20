@@ -11,13 +11,13 @@ class Member extends Person
     private int $memberId;
     private string $phone;
     private ?string $email;
-    private int $membershipStartDate;
+    private string $membershipStartDate;
 
     public function __construct(
         string $name,
         string $lname,
         string $phone,
-        ?int $membershipStartDate = null,
+        ?string $membershipStartDate = null,
         ?string $email = null,
         ?int $memberId = null
     ) {
@@ -33,7 +33,7 @@ class Member extends Person
         if (isset($membershipStartDate)) {
             $this->membershipStartDate = $membershipStartDate;
         } else {
-            $this->membershipStartDate = time();
+            $this->membershipStartDate = date('Y/m/d', time());
         }
     }
 
@@ -45,7 +45,7 @@ class Member extends Person
             lname: $csvRecord[2],
             phone: $csvRecord[3],
             email: !empty($csvRecord[4]) ? $csvRecord[4] : null,
-            membershipStartDate: (int) $csvRecord[5]
+            membershipStartDate: $csvRecord[5]
         );
     }
 
@@ -59,7 +59,7 @@ class Member extends Person
         return $this->lname;
     }
 
-    public function getMembershipStartDate(): int
+    public function getMembershipStartDate(): string
     {
         return $this->membershipStartDate;
     }

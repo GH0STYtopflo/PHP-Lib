@@ -14,8 +14,8 @@ class Book extends Model
     private ?int $printing;
     private ?string $genre;
     private ?int $memberId;
-    private ?int $borrowDate;
-    private ?int $returnDate;
+    private ?string $borrowDate;
+    private ?string $returnDate;
 
     public function __construct(
         string $title,
@@ -25,8 +25,8 @@ class Book extends Model
         ?string $genre = null,
         ?int $bookId = null,
         ?int $memberID = null,
-        ?int $borrowDate = null,
-        ?int $returnDate = null
+        ?string $borrowDate = null,
+        ?string $returnDate = null
     ) {
         if (isset($bookId)) {
             $this->bookId = $bookId;
@@ -54,8 +54,8 @@ class Book extends Model
             printing: (int) $csvRecord[4],
             genre: $csvRecord[5],
             memberID: !empty($csvRecord[6]) ? (int) $csvRecord[6] : null,
-            borrowDate: !empty($csvRecord[7]) ? (int) $csvRecord[7] : null,
-            returnDate: !empty($csvRecord[8]) ? (int) $csvRecord[8] : null,
+            borrowDate: !empty($csvRecord[7]) ? (string) $csvRecord[7] : null,
+            returnDate: !empty($csvRecord[8]) ? (string) $csvRecord[8] : null,
         );
     }
 
@@ -136,24 +136,24 @@ class Book extends Model
         return $this;
     }
 
-    public function getBorrowDate(): ?int
+    public function getBorrowDate(): ?string
     {
         return $this->borrowDate;
     }
 
-    public function setBorrowDate(?int $borrowDate): self
+    public function setBorrowDate(?string $borrowDate): self
     {
         $this->borrowDate = $borrowDate;
 
         return $this;
     }
 
-    public function getReturnDate(): ?int
+    public function getReturnDate(): ?string
     {
         return $this->returnDate;
     }
 
-    public function setReturnDate(?int $returnDate): self
+    public function setReturnDate(?string $returnDate): self
     {
         $this->returnDate = $returnDate;
 
