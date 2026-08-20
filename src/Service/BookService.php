@@ -57,26 +57,31 @@ class BookService
 
     public static function search(array $data): array
     {
-        if (isset($data['year']) && !is_numeric($data['year'])) {
-            throw new TypeMismatchException('year', 'numeric', gettype($data['year']), line: __LINE__);
-        }
 
-        if (isset($data['printing']) && !is_numeric($data['printing'])) {
-            throw new TypeMismatchException('printing', 'numeric', gettype($data['printing']), line: __LINE__);
-        }
+        if (count($data) == 0) {
+            $records = BookHandle::readAll();
+        } else {
+            if (isset($data['year']) && !is_numeric($data['year'])) {
+                throw new TypeMismatchException('year', 'numeric', gettype($data['year']), line: __LINE__);
+            }
 
-        if (isset($data['id']) && !is_numeric($data['id'])) {
-            throw new TypeMismatchException('id', 'numeric', gettype($data['id']), line: __LINE__);
-        }
+            if (isset($data['printing']) && !is_numeric($data['printing'])) {
+                throw new TypeMismatchException('printing', 'numeric', gettype($data['printing']), line: __LINE__);
+            }
 
-        $records = BookHandle::search(
-            isset($data['book-id']) ? (int) $data['book-id'] : null,
-            isset($data['title']) ? $data['title'] : null,
-            isset($data['author']) ? $data['author'] : null,
-            isset($data['year']) ? (int) $data['year'] : null,
-            isset($data['printing']) ? (int) $data['printing'] : null,
-            isset($data['genre']) ? $data['genre'] : null
-        );
+            if (isset($data['id']) && !is_numeric($data['id'])) {
+                throw new TypeMismatchException('id', 'numeric', gettype($data['id']), line: __LINE__);
+            }
+
+            $records = BookHandle::search(
+                isset($data['book-id']) ? (int)$data['book-id'] : null,
+                isset($data['title']) ? $data['title'] : null,
+                isset($data['author']) ? $data['author'] : null,
+                isset($data['year']) ? (int)$data['year'] : null,
+                isset($data['printing']) ? (int)$data['printing'] : null,
+                isset($data['genre']) ? $data['genre'] : null
+            );
+        }
         $books = [];
 
         foreach ($records as $record) {

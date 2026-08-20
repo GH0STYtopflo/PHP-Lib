@@ -78,13 +78,17 @@ class MemberService
 
     public static function search(array $data): array
     {
-        $csvRecords = MemberHandle::search(
-            id: isset($data['member-id']) ? (int) $data['member-id'] : null,
-            name: isset($data['name']) ? $data['name'] : null,
-            lname: isset($data['lname']) ? $data['lname'] : null,
-            phone: isset($data['phone']) ? $data['phone'] : null,
-            email: isset($data['email']) ? $data['email'] : null,
-        );
+        if (count($data) == 0) {
+            $csvRecords = MemberHandle::readAll();
+        } else {
+            $csvRecords = MemberHandle::search(
+                id: isset($data['member-id']) ? (int) $data['member-id'] : null,
+                name: isset($data['name']) ? $data['name'] : null,
+                lname: isset($data['lname']) ? $data['lname'] : null,
+                phone: isset($data['phone']) ? $data['phone'] : null,
+                email: isset($data['email']) ? $data['email'] : null,
+            );
+        }
 
         $members = [];
 

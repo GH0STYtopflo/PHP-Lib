@@ -81,15 +81,20 @@ class StaffService
 
     public static function search(array $data): array
     {
-        $records = StaffHandle::search(
-            staffId: isset($data['staff-id']) ? $data['staff-id'] : null,
-            name: isset($data['name']) ? $data['name'] : null,
-            lname: isset($data['lname']) ? $data['lname'] : null,
-            positionTitle:  isset($data['position-title']) ? $data['position-title'] : null,
-            email:  isset($data['email']) ? $data['email'] : null,
-            shiftStart: isset($data['shift-start']) ? strtotime($data['shift-start']) : null,
-            shiftEnd: isset($data['shift-end']) ? strtotime($data['shift-start']) : null
-        );
+        if (count($data) == 0) {
+            $records = StaffHandle::readAll();
+        } else {
+            $records = StaffHandle::search(
+                staffId: isset($data['staff-id']) ? $data['staff-id'] : null,
+                name: isset($data['name']) ? $data['name'] : null,
+                lname: isset($data['lname']) ? $data['lname'] : null,
+                positionTitle: isset($data['position-title']) ? $data['position-title'] : null,
+                email: isset($data['email']) ? $data['email'] : null,
+                shiftStart: isset($data['shift-start']) ? strtotime($data['shift-start']) : null,
+                shiftEnd: isset($data['shift-end']) ? strtotime($data['shift-start']) : null
+            );
+        }
+
         $staff = [];
 
         foreach ($records as $record) {
