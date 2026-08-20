@@ -32,7 +32,7 @@ trait HandleTrait
         while (!feof($file)) {
             $record = fgetcsv($file, 0, ',');
 
-            if (!is_bool($record)) {
+            if (is_array($record) && !(count($record) == 1 && $record[0] == null)) {
                 $records[] = $record;
             }
         }

@@ -44,7 +44,7 @@ class Ledger
                     self::callSearch(
                         $command->getTarget(),
                         $command->getOptions()),
-                        $command->getTarget()
+                    $command->getTarget()
                 );
                 break;
             case Operation::LIST:

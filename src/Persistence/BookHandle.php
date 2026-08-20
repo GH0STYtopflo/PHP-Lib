@@ -26,7 +26,7 @@ class BookHandle implements Handle
         while (!feof($file)) {
             $record = fgetcsv($file, 0, ',');
 
-            if (!is_bool($record)) {
+            if (is_array($record) && !(count($record) == 1 && $record[0] == null)) {
                 if (
                     (!isset($id) || $id == $record[0])
                     && (!isset($title) || str_contains(strtolower($record[1]), strtolower($title)))

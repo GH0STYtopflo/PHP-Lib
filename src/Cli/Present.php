@@ -16,25 +16,44 @@ class Present
     {
         switch ($target) {
             case Target::BOOK:
-                foreach ($data as $i => $book) {
-                    echo "#$i:\n";
-                    echo self::printBook($book);
+                if (count($data) > 0) {
+                    foreach ($data as $i => $book) {
+                        echo "#$i:\n";
+                        echo self::printBook($book);
+                    }
+                } else {
+                    echo "No book records found.\n" .
+                        "Try adding some by '... -A --target=book ...'\n";
                 }
                 break;
             case Target::MEMBER:
-                foreach ($data as $i => $member) {
-                    echo "#$i:\n";
-                    echo self::printMember($member);
+                if (count($data) > 0) {
+                    foreach ($data as $i => $member) {
+                        echo "#$i:\n";
+                        echo self::printMember($member);
+                    }
+                } else {
+                    echo "No member records found.\n" .
+                        "Try adding some by '... -A --target=member ...'\n";
                 }
                 break;
             case Target::STAFF:
-                foreach ($data as $i => $staff) {
-                    echo "#$i:\n";
-                    echo self::printStaff($staff);
+                if (count($data) > 0) {
+                    foreach ($data as $i => $staff) {
+                        echo "#$i:\n";
+                        echo self::printStaff($staff);
+                    }
+                } else {
+                    echo "No staff records found.\n" .
+                    "Try adding some by '... -A --target=staff ...'\n";
                 }
                 break;
             case Target::LIBRARY:
-                echo self::printLibrary($data);
+                if ($data == null) {
+                    echo "No library info available yet.\n";
+                } else {
+                    echo self::printLibrary($data);
+                }
         };
     }
 
@@ -96,7 +115,7 @@ class Present
         return $str;
     }
 
-    private static function printLibrary(Library $library): string
+    private static function printLibrary(?Library $library): string
     {
         $now = strtotime('now');
         $close = strtotime($library->getClose(), time());
