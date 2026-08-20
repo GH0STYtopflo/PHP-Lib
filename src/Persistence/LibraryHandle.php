@@ -2,7 +2,9 @@
 
 namespace Gh0stytopflo\PhpLib\Persistence;
 
+use Gh0stytopflo\PhpLib\Exception\LockedFileAccessException;
 use Gh0stytopflo\PhpLib\Model\Library;
+use Gh0stytopflo\PhpLib\Util\FilePermissionChecker;
 use Gh0stytopflo\PhpLib\Util\LockFile;
 
 class LibraryHandle
@@ -11,6 +13,10 @@ class LibraryHandle
 
     public static function save(Library $library): void
     {
+        if (!FilePermissionChecker::check(self::PATH_TO_FILE)) {
+           throw new LockedFileAccessException(self::PATH_TO_FILE, line: __LINE__);
+        }
+
         $file = fopen(self::PATH_TO_FILE, 'w');
 
         LockFile::lock(self::PATH_TO_FILE);
@@ -34,6 +40,10 @@ class LibraryHandle
 
     public static function delete(): void
     {
+        if (!FilePermissionChecker::check(self::PATH_TO_FILE)) {
+            throw new LockedFileAccessException(self::PATH_TO_FILE, line: __LINE__);
+        }
+
         $file = fopen(self::PATH_TO_FILE, 'w');
 
         LockFile::lock(self::PATH_TO_FILE);
