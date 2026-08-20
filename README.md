@@ -347,3 +347,68 @@ Before modifying a file:
 Although simultaneous modifications are unlikely in this type of application, this system provides additional protection against accidental concurrent writes.
 > On apps with bigger scale, the better solution would be buffering the changes to prevent a bottleneck. 
 > However, for an app like this, the solution provided above is just about enough.
+
+# Project Structure
+```
+PHP-Lib
+   ├── composer.json
+   ├── exec.sh
+   ├── library.json
+   ├── README.md
+   ├── sandbox.php
+   ├── Screenshot.png
+   ├── src
+   │   ├── Cli
+   │   │   ├── Bootstrap.php
+   │   │   ├── Ledger.php
+   │   │   ├── Parser.php
+   │   │   ├── Present.php
+   │   │   ├── Start.php
+   │   │   └── Validate.php
+   │   ├── Exception
+   │   │   ├── BorrowedBookDeletionException.php
+   │   │   ├── BorrowingBorrowedBookException.php
+   │   │   ├── InvalidOpenAndCloseException.php
+   │   │   ├── InvalidShiftStartAndEndException.php
+   │   │   ├── LockedFileAccessException.php
+   │   │   ├── MemberWithBorrowedBookDelException.php
+   │   │   ├── MultipleOperationsSpecifiedException.php
+   │   │   ├── MultipleTargetsSpecifiedException.php
+   │   │   ├── MutatingNonExistentLibraryInfoException.php
+   │   │   ├── RequiredPropertyNotProvidedException.php
+   │   │   ├── ReturningNotBorrowedBookException.php
+   │   │   └── TypeMismatchException.php
+   │   ├── Model
+   │   │   ├── Book.php
+   │   │   ├── Command.php
+   │   │   ├── Enums
+   │   │   │   ├── Operation.php
+   │   │   │   └── Target.php
+   │   │   ├── Library.php
+   │   │   ├── Member.php
+   │   │   ├── Model.php
+   │   │   ├── Person.php
+   │   │   └── Staff.php
+   │   ├── Persistence
+   │   │   ├── BookHandle.php
+   │   │   ├── Handle.php
+   │   │   ├── HandleTrait.php
+   │   │   ├── LibraryHandle.php
+   │   │   ├── MemberHandle.php
+   │   │   └── StaffHandle.php
+   │   ├── Service
+   │   │   ├── BookService.php
+   │   │   ├── LibraryService.php
+   │   │   ├── MemberService.php
+   │   │   └── StaffService.php
+   │   └── Util
+   │       ├── FilePermissionChecker.php
+   │       ├── IdGenerator.php
+   │       └── LockFile.php
+   └── tables
+       ├── book.csv
+       ├── member.csv
+       └── staff.csv
+   
+   10 directories, 49 files
+```
