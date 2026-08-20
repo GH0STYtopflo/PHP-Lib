@@ -8,16 +8,15 @@ use Gh0stytopflo\PhpLib\Model\Enums\Target;
 
 class Validate
 {
-    private const ADD_AND_SEARCHTARGETS = [
-        Target::MEMBER,
-        Target::BOOK,
-        Target::STAFF,
-        Target::LIBRARY
-    ];
-
-    private const BORROW_AND_RETURN_TARGETS = [
-        Target::BOOK
-    ];
+    private const array OP_TARGET_MAP = array(
+        'ADD' => [Target::BOOK, Target::MEMBER, Target::STAFF, Target::LIBRARY],
+        'DELETE' => [Target::BOOK, Target::MEMBER, Target::STAFF, Target::LIBRARY],
+        'LIST' => [Target::BOOK, Target::MEMBER, Target::STAFF, Target::LIBRARY],
+        'EDIT' => [Target::BOOK, Target::MEMBER, Target::STAFF, Target::LIBRARY],
+        'SEARCH' => [Target::BOOK, Target::MEMBER, Target::STAFF],
+        'RETURN' => [Target::BOOK],
+        'BORROW' => [Target::BOOK],
+    );
 
     public static function validate(Command $command): ?string
     {
@@ -37,18 +36,7 @@ class Validate
             return "Undefined target \e[0;31m" . $command->getTarget() . "\e[0m";
         }
 
-        if (
-            ($command->getOperation() === Operation::ADD || $command->getOperation() === Operation::SEARCH)
-            && !in_array($command->getTarget(), self::ADD_AND_SEARCHTARGETS)
-        ) {
-            return "Cannot use target \e[0;31m" . $command->getTarget()->name .
-            "\e[0m for operation \e[0;31m" . $command->getOperation()->name . "\e[0m";
-        }
-
-        if (
-            ($command->getOperation() === Operation::BORROW || $command->getOperation() === Operation::RETURN)
-            && !in_array($command->getTarget(), self::BORROW_AND_RETURN_TARGETS)
-        ) {
+        if (!in_array($command->getTarget(), self::OP_TARGET_MAP[$command->getOperation()->name])) {
             return "Cannot use target \e[0;31m" . $command->getTarget()->name .
             "\e[0m for operation \e[0;31m" . $command->getOperation()->name . "\e[0m";
         }
