@@ -2,13 +2,15 @@
 
 namespace Gh0stytopflo\PhpLib\Cli;
 
+use Gh0stytopflo\PhpLib\Exception\MultipleOperationsSpecifiedException;
+use Gh0stytopflo\PhpLib\Exception\MultipleTargetsSpecifiedException;
 use Gh0stytopflo\PhpLib\Model\Command;
 use Gh0stytopflo\PhpLib\Model\Enums\Operation;
 use Gh0stytopflo\PhpLib\Model\Enums\Target;
 
 class Parser
 {
-    private const OPS = array(
+    private const array OPS = array(
         '-A',
         '-D',
         '-L',
@@ -27,7 +29,7 @@ class Parser
         $on = [];
 
         for ($i = 0; $i < count($args); $i++) {
-            if (!isset($operation)) {
+            if (in_array($args[$i], self::OPS) && !isset($operation)) {
                 $operation = match ($args[$i]) {
                     '-S' => Operation::SEARCH,
                     '-A' => Operation::ADD,
@@ -38,8 +40,8 @@ class Parser
                     '-R' => Operation::RETURN,
                     default => $args[$i],
                 };
-            } else {
-                // TODO: Throw multiple ops exception
+            } elseif (in_array($args[$i], self::OPS) && isset($operation)) {
+                throw new MultipleOperationsSpecifiedException(line: __LINE__);
             }
 
             if (str_contains($args[$i], '--target=')) {
@@ -52,7 +54,7 @@ class Parser
                         default => $args[$i],
                     };
                 } else {
-                    // TODO: THROW multiple targets exception
+                    throw new MultipleTargetsSpecifiedException(line: __LINE__);
                 }
             }
 

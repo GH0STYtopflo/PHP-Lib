@@ -19,7 +19,12 @@ class Ledger
         Bootstrap::setup();
         array_shift($args);
 
-        $command = Parser::parse($args);
+        try {
+            $command = Parser::parse($args);
+        } catch (RuntimeException $e) {
+            echo $e->getMessage();
+            return;
+        }
         $valMessage = Validate::validate($command);
 
         if (isset($valMessage)) {
@@ -35,10 +40,13 @@ class Ledger
                 self::callDelete($command->getTarget(), $command->getOptions(), $command->getOn());
                 break;
             case Operation::SEARCH:
-                Present::printPrettiy(self::callSearch($command->getTarget(), $command->getOptions()));
+                Present::printPrettiy(
+                    self::callSearch($command->getTarget(), $command->getOptions()),
+                    $command->getTarget()
+                );
                 break;
             case Operation::LIST:
-                Present::printPrettiy(self::callList($command->getTarget()));
+                Present::printPrettiy(self::callList($command->getTarget()), $command->getTarget());
                 break;
             case Operation::EDIT:
                 self::callEdit($command->getTarget(), $command->getOptions(), $command->getOn());
