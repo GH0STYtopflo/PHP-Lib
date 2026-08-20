@@ -26,6 +26,6 @@ class IdGenerator
                 $line .= $char;
             }
         }
-        return 0;
+        return 1;
     }
 }
