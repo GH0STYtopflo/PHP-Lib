@@ -13,6 +13,10 @@ class Bootstrap
     {
         date_default_timezone_set('Asia/Tehran');
 
+        if (!is_dir(__DIR__ . '/../../tables/')) {
+            mkdir(__DIR__ . '/../../tables/');
+        }
+
         if (!file_exists(LibraryHandle::PATH_TO_FILE)) {
             touch(LibraryHandle::PATH_TO_FILE);
         }
