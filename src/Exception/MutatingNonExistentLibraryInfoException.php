@@ -6,11 +6,13 @@ use RuntimeException;
 
 class MutatingNonExistentLibraryInfoException extends RuntimeException
 {
-    public function __construct(int $code = 0, int $line = 0)
+    public function __construct(int $code = 0, int $line = -1)
     {
-        parent::__construct(
-            "Cannot edit non-existent library information.\n" .
-            "Try Adding information using '... -A --target=library ...' first.",
-            $code);
+        $this->line = $line;
+        $this->code = $code;
+
+        $this->message = "Cannot edit non-existent library information.\n" .
+            "Try Adding information using '... -A --target=library ...' first.";
+
     }
 }

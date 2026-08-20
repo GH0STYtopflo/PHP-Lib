@@ -7,10 +7,10 @@ use RuntimeException;
 
 class MemberWithBorrowedBookDelException extends RuntimeException
 {
-    public function __construct(Member $member, ?int $line = null, ?int $code = null)
+    public function __construct(Member $member, int $line = -1, int $code = 0)
     {
-        $this->line = isset($line) ? $line : -1;
-        $this->code = isset($code) ? $code : 0;
+        $this->line = $line;
+        $this->code = $code;
 
         $this->message = "You cannot delete \e[0;33m"
         . $member->getName()
