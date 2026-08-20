@@ -212,7 +212,7 @@ class Ledger
         return $data;
     }
 
-    private static function callList(Target $target): array | Library
+    private static function callList(Target $target): array | Library | null
     {
         $data = null;
 
