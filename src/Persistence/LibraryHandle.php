@@ -28,7 +28,7 @@ class LibraryHandle
         LockFile::release(self::PATH_TO_FILE);
     }
 
-    public static function read(): array | false
+    public static function read(): array | null
     {
         $file = fopen(self::PATH_TO_FILE, 'r');
 

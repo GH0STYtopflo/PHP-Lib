@@ -234,7 +234,7 @@ class Ledger
     {
         $results = self::callSearch($target, $on);
 
-        if ($results instanceof Library) {
+        if ($results instanceof Library || $results === null) {
             return $results;
         }
 

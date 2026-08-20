@@ -3,6 +3,7 @@
 namespace Gh0stytopflo\PhpLib\Service;
 
 use Gh0stytopflo\PhpLib\Exception\InvalidOpenAndCloseException;
+use Gh0stytopflo\PhpLib\Exception\MutatingNonExistentLibraryInfoException;
 use Gh0stytopflo\PhpLib\Exception\RequiredPropertyNotProvidedException;
 use Gh0stytopflo\PhpLib\Exception\TypeMismatchException;
 use Gh0stytopflo\PhpLib\Model\Library;
@@ -70,9 +71,13 @@ class LibraryService
         LibraryHandle::delete();
     }
 
-    public static function read(): Library
+    public static function read(): Library | null
     {
         $aarr = LibraryHandle::read();
+
+        if ($aarr === null) {
+            return null;
+        }
 
         return Library::mapArrayToInstance($aarr);
     }
@@ -81,6 +86,10 @@ class LibraryService
     {
         self::editCheckHook($data);
         $library = self::read();
+
+        if ($library === null) {
+            throw new MutatingNonExistentLibraryInfoException(line: __LINE__);
+        }
 
         $library->setName(isset($data['name']) ? $data['name'] : $library->getName());
         $library->setAddress(isset($data['address']) ? $data['address'] : $library->getAddress());
