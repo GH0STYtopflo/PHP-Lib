@@ -66,7 +66,7 @@ class StaffService
         }
     }
 
-    public static function remove(Staff $staff)
+    public static function remove(Staff $staff): void
     {
         $csvRecords = StaffHandle::readAll();
 

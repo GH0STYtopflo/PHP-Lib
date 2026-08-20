@@ -45,7 +45,7 @@ class MemberService
         MemberHandle::append($member);
     }
 
-    public static function remove(Member $member)
+    public static function remove(Member $member): void
     {
         if (!self::hasBorrowedBookHook($member->getMemberId())) {
             $csvRecords = MemberHandle::readAll();

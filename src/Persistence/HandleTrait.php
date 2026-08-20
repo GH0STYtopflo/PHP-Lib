@@ -9,7 +9,7 @@ use Gh0stytopflo\PhpLib\Util\LockFile;
 
 trait HandleTrait
 {
-    public static function append(Model $data)
+    public static function append(Model $data): void
     {
         if (!FilePermissionChecker::check(self::PATH_TO_FILE)) {
             throw new LockedFileAccessException(self::PATH_TO_FILE, line: __LINE__);

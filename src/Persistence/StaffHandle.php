@@ -10,7 +10,7 @@ class StaffHandle implements Handle
 {
     use HandleTrait;
 
-    public const PATH_TO_FILE =  __DIR__ . '/../../tables/staff.csv';
+    public const string PATH_TO_FILE =  __DIR__ . '/../../tables/staff.csv';
 
     public static function search(
         ?int $staffId = null,

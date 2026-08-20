@@ -36,7 +36,7 @@ class BookService
         ));
     }
 
-    public static function remove(Book $book)
+    public static function remove(Book $book): void
     {
         $csvRecords = BookHandle::readAll();
 
@@ -91,7 +91,7 @@ class BookService
     }
 
 
-    public static function borrowBook(Book $book, Member $member, array $data)
+    public static function borrowBook(Book $book, Member $member, array $data): void
     {
         if (!isset($data['return-date'])) {
             throw new RequiredPropertyNotProvidedException(varName: 'return-date', line: __LINE__);
@@ -125,7 +125,7 @@ class BookService
         BookHandle::writeAll($csvRecords);
     }
 
-    public static function returnBook(Book $book)
+    public static function returnBook(Book $book): void
     {
         $csvRecords = BookHandle::readAll();
 

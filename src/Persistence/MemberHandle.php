@@ -10,7 +10,7 @@ class MemberHandle implements Handle
 {
     use HandleTrait;
 
-    public const PATH_TO_FILE = __DIR__ . '/../../tables/member.csv';
+    public const string PATH_TO_FILE = __DIR__ . '/../../tables/member.csv';
 
     public static function search(
         ?int $id = null,

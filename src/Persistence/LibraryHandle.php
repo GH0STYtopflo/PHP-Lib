@@ -9,7 +9,7 @@ use Gh0stytopflo\PhpLib\Util\LockFile;
 
 class LibraryHandle
 {
-    public const PATH_TO_FILE = __DIR__ . '/../../library.json';
+    public const string PATH_TO_FILE = __DIR__ . '/../../library.json';
 
     public static function save(Library $library): void
     {
@@ -33,9 +33,8 @@ class LibraryHandle
         $file = fopen(self::PATH_TO_FILE, 'r');
 
         $json = file_get_contents(self::PATH_TO_FILE);
-        $aarr = json_decode($json, true);
 
-        return $aarr;
+        return json_decode($json, true);
     }
 
     public static function delete(): void
