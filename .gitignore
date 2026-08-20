@@ -1,8 +1,14 @@
 # We won't track the vendor dir (ofc. It'll make our repo bloated)
 vendor/
 
+# Sandbox for playing around
 sandbox.php
 
+# Tables
 tables/*
 
+# Library json file
 library.json
+
+# Jetbrains related stuff
+.idea/

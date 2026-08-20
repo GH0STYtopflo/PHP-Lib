@@ -4,7 +4,6 @@ namespace Gh0stytopflo\PhpLib\Service;
 
 use Gh0stytopflo\PhpLib\Exception\BorrowedBookDeletionException;
 use Gh0stytopflo\PhpLib\Exception\BorrowingBorrowedBookException;
-use Gh0stytopflo\PhpLib\Exception\InvalidDateException;
 use Gh0stytopflo\PhpLib\Exception\RequiredPropertyNotProvidedException;
 use Gh0stytopflo\PhpLib\Exception\ReturningNotBorrowedBookException;
 use Gh0stytopflo\PhpLib\Exception\TypeMismatchException;
