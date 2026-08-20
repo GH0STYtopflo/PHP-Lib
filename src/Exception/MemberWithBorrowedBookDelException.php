@@ -14,7 +14,7 @@ class MemberWithBorrowedBookDelException extends RuntimeException
 
         $this->message = "You cannot delete \e[0;33m"
         . $member->getName()
-        . "\e[0m {"
+        . "\e[0m {id: "
         . $member->getMemberId()
         . '}'
         . '. They currently have a book in their possession';

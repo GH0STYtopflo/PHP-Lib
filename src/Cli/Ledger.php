@@ -41,8 +41,10 @@ class Ledger
                 break;
             case Operation::SEARCH:
                 Present::printPrettiy(
-                    self::callSearch($command->getTarget(), $command->getOptions()),
-                    $command->getTarget()
+                    self::callSearch(
+                        $command->getTarget(),
+                        $command->getOptions()),
+                        $command->getTarget()
                 );
                 break;
             case Operation::LIST:
@@ -66,15 +68,19 @@ class Ledger
             switch ($target) {
                 case Target::BOOK:
                     BookService::add($options);
+                    echo "Added new book successfully\n";
                     break;
                 case Target::MEMBER:
                     MemberService::add($options);
+                    echo "Added new member successfully\n";
                     break;
                 case Target::STAFF:
                     StaffService::add($options);
+                    echo "Added new staff successfully\n";
                     break;
                 case Target::LIBRARY:
                     LibraryService::save($options);
+                    echo "Saved library information successfully\n";
                     break;
             }
         } catch (RuntimeException $e) {
@@ -95,15 +101,19 @@ class Ledger
             switch ($target) {
                 case Target::BOOK:
                     BookService::editBook($data, $options);
+                    echo "Edited book successfully\n";
                     break;
                 case Target::MEMBER:
                     MemberService::edit($data, $options);
+                    echo "Edited member successfully\n";
                     break;
                 case Target::STAFF:
                     StaffService::edit($data, $options);
+                    echo "Edited staff successfully\n";
                     break;
                 case Target::LIBRARY:
                     LibraryService::edit($options);
+                    echo "Edited library information successfully\n";
                     break;
             }
         } catch (RuntimeException $e) {
@@ -124,15 +134,19 @@ class Ledger
             switch ($target) {
                 case Target::BOOK:
                     BookService::remove($data);
+                    echo "Deleted book successfully\n";
                     break;
                 case Target::MEMBER:
                     MemberService::remove($data);
+                    echo "Deleted member successfully\n";
                     break;
                 case Target::STAFF:
                     StaffService::remove($data);
+                    echo "Deleted staff successfully\n";
                     break;
                 case Target::LIBRARY:
                     LibraryService::remove();
+                    echo "Deleted library information successfully\n";
                     break;
             }
         } catch (RuntimeException $e) {
@@ -157,6 +171,7 @@ class Ledger
 
         try {
             BookService::borrowBook($book, $member, $options);
+            echo "Borrowed book successfully\n";
         } catch (RuntimeException $e) {
             echo $e->getMessage();
         }
@@ -173,6 +188,7 @@ class Ledger
 
         try {
             BookService::returnBook($book);
+            echo "Returned book successfully\n";
         } catch (RuntimeException $e) {
             echo $e->getMessage();
         }
@@ -226,9 +242,9 @@ class Ledger
             return null;
         } elseif (count($results) == 1) {
             return $results[0];
-        } elseif (count($results) > 1) {
+        } else {
             echo "Found more than 1 results\n";
-            Present::printPrettiy($results);
+            Present::printPrettiy($results, $target);
             $selected = $results[self::getSelection(count($results) - 1)];
             return $selected;
         }
